@@ -12,3 +12,6 @@ cara menjalankannya tergantung pada tujuan, jika tujuannya melakukan debug, lebi
 
 # Hasil
 hasil yang ingin dicapai adalah tampilan yang menampilkan nama mahasiswa dan nama praktikumnya
+
+# Screenshot
+![Alt Text](D:\Kuliah\Semester5\Mobile\Praktikum1\244107020216-mobile-course\01-week-1-mobile-development-ecosystem-flutter-refresh\screenshots\88934c28-f0cf-4b14-a68e-1e1ec33122a9.jpg)
