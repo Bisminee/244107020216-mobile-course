@@ -30,3 +30,11 @@ Hasil Akhir praktikum
 
 <img src="screenshots/88934c28-f0cf-4b14-a68e-1e1ec33122a9.jpg" width="200">
 
+Kode Mini Assignment
+
+<img src="screenshots/kode_mini_assignment.png" width="350">
+
+Hasil Mini Assignment
+
+<img src="task/hasil_mini_assignment.jpg" width="200">
+
