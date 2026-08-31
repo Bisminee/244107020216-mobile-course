@@ -15,14 +15,18 @@ hasil yang ingin dicapai adalah tampilan yang menampilkan nama mahasiswa dan nam
 
 # Screenshot
 Latihan madiri persegi panjang
-<img src="screenshots/persegi_panjang.jpg" width="100">
+
+<img src="screenshots/persegi_panjang.png" width="100">
 
 Lathihan profil mahasiswa
-<img src="screenshots/profil_mahasiswa.jpg" width="100">
+
+<img src="screenshots/profil_mahasiswa.png" width="100">
 
 Kode Praktikum
-<img src="screenshots/kode_praktikum.jpg" width="100">
+
+<img src="screenshots/kode_praktikum.png" width="100">
 
 Hasil Akhir praktikum
-<img src="screenshots/88934c28-f0cf-4b14-a68e-1e1ec33122a9.jpg" width="100">
+
+<img src="screenshots/88934c28-f0cf-4b14-a68e-1e1ec33122a9.png" width="100">
 
