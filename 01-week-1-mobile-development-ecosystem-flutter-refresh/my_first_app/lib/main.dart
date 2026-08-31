@@ -23,6 +23,7 @@ class MyApp extends StatelessWidget {
               Text('Bisma Adhiaksa', style: TextStyle(fontSize: 24.0)),
               Text('NIM: 244107020216'),
               Text('Pemrograman Mobile - Minggu 1'),
+              Icon(Icons.accessibility, size:34),
             ],
           ),
         ),
