@@ -36,7 +36,10 @@
 # Screenshot
 Kode Warm Up 
 
-<img src="screenshots/kode-warmup1.png" width="350"><img src="screenshots/kode-warmup2.png" width="350">
+<p align="center">
+<img src="screenshots/kode-warmup1.png" width="350">
+<img src="screenshots/kode-warmup2.png" width="350">
+  </p>
 
 Hasil Warm Up
 
