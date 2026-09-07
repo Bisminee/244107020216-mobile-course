@@ -47,6 +47,7 @@ Hasil Warm Up
 <img src="screenshots/hapus-expanded.png" width="350">
 tidak bisa dijalankan dan tidak ada peringatan overflow
 
+
 Ganti mainAxisSize
 
 <img src="screenshots/main-axis-max.png" width="200">
@@ -77,7 +78,9 @@ ubah breakpoint
 <img src="screenshots/breakpoint-change2.png" width="200">
 tidak ada perubahan di perubahan angka break point, hanya berubah di angka antara 300 - 400
 
+
 Ukuran layar berbeda
+
 Samsung S8+ Ultra
 
 <img src="screenshots/tampilan-samsung-s8+-ultra.png" width="200">
