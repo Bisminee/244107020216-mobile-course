@@ -19,13 +19,11 @@
 
 
 # Hasil
-- Mengetahui Ekosistem mobile dan Flutter
-- Mengetahui dasar Dart dan dasar dari framework Flutter
-- Mengetahui cara Null Handling 
-- Menyiapkan environment untuk git dan FLutter
-- Mampu mengubah UI Default di Flutter
-- Mampu menyiapkan repository untuk pertemuan 16 minggu
-- Mampu mengerjakan mini assignment
+- Dapat menjelaskan prinsip Declarative UI dan hubungan antara widget, konfigurasim serta state
+- Bisa menggunakan StatelessWidget, StatefulWidget, COntainer, Row, Column, dan Expanded
+- Bisa membedakan komponen material3 dan Cupertino
+- Bisa membangun layout responsive
+- Bisa menerapkan dark mode, styling, dan aksesibilitas dasar
 
 # Refleksi
 - native lebih cocok digunakan ketika memilki kebutuhan khusus untuk menghubungkan aplikasi dengan sistem operasi langsung, misal membutuhkan akses BLE
@@ -36,27 +34,50 @@
 
 
 # Screenshot
-Latihan madiri persegi panjang
+Kode Warm Up 
+<img src="screenshots/kode-warmup1.png" width="350">
 
-<img src="screenshots/persegi_panjang.png" width="350">
+<img src="screenshots/kode-warmup2.png" width="350">
 
-Lathihan profil mahasiswa
+Hasil Warm Up
+<img src="screenshots/warmup.png" width="350">
 
-<img src="screenshots/profil_mahasiswa.png" width="350">
+## Eksperimen Warm Up
+<img src="screenshots/hapus-expanded.png" width="350">
+tidak bisa dijalankan dan tidak ada peringatan overflow
 
-Kode Praktikum
+Ganti mainAxisSize
+<img src="screenshots/main-axis-max.png" width="200">
 
-<img src="screenshots/kode_praktikum.png" width="350">
+Kode penambahan baris baru
+<img src="screenshots/kode-email.png" width="350">
+Hasil penambahan baris baru
+<img src="screenshots/hasil-kode-email.png" width="350">
 
-Hasil Akhir praktikum
+## Praktikum: dashboard responsif
 
-<img src="screenshots/88934c28-f0cf-4b14-a68e-1e1ec33122a9.jpg" width="200">
+Kode Dashboard Responsive
+<img src="screenshots/kode-dashboard-responsive1.png" width="200">
+<img src="screenshots/kode-dashboard-responsive2.png" width="200">
+<img src="screenshots/kode-dashboard-responsive3.png" width="200">
 
-Kode Mini Assignment
+Hasil Kode
+<img src="screenshots/hasil-kode-responsive.png" width="200">
 
-<img src="screenshots/kode_mini_assignment.png" width="350">
+ubah breakpoint
+<img src="screenshots/breakpoint-change1.png" width="200">
+<img src="screenshots/breakpoint-change2.png" width="200">
+tidak ada perubahan di perubahan angka break point, hanya berubah di angka antara 300 - 400
 
-Hasil Mini Assignment
+Ukuran layar berbeda
+Samsung S8+ Ultra
+<img src="screenshots/tampilan-samsung-s8+-ultra.png" width="200">
+Samsung Z Fold
+<img src="screenshots/tampilan-samsung-z-fold.png" width="200">
 
-<img src="task/hasil_mini_assignment.jpg" width="200">
+Semantics
+<img src="screenshots/semantics.png" width="200">
+
+
+
 
