@@ -35,11 +35,11 @@
 
 # Screenshot
 Kode Warm Up 
-<img src="screenshots/kode-warmup1.png" width="350">
 
-<img src="screenshots/kode-warmup2.png" width="350">
+<img src="screenshots/kode-warmup1.png" width="350"><img src="screenshots/kode-warmup2.png" width="350">
 
 Hasil Warm Up
+
 <img src="screenshots/warmup.png" width="350">
 
 ## Eksperimen Warm Up
@@ -47,35 +47,45 @@ Hasil Warm Up
 tidak bisa dijalankan dan tidak ada peringatan overflow
 
 Ganti mainAxisSize
+
 <img src="screenshots/main-axis-max.png" width="200">
 
 Kode penambahan baris baru
+
 <img src="screenshots/kode-email.png" width="350">
+
 Hasil penambahan baris baru
+
 <img src="screenshots/hasil-kode-email.png" width="350">
 
 ## Praktikum: dashboard responsif
 
 Kode Dashboard Responsive
+
 <img src="screenshots/kode-dashboard-responsive1.png" width="200">
 <img src="screenshots/kode-dashboard-responsive2.png" width="200">
 <img src="screenshots/kode-dashboard-responsive3.png" width="200">
 
 Hasil Kode
+
 <img src="screenshots/hasil-kode-responsive.png" width="200">
 
 ubah breakpoint
+
 <img src="screenshots/breakpoint-change1.png" width="200">
 <img src="screenshots/breakpoint-change2.png" width="200">
 tidak ada perubahan di perubahan angka break point, hanya berubah di angka antara 300 - 400
 
 Ukuran layar berbeda
 Samsung S8+ Ultra
+
 <img src="screenshots/tampilan-samsung-s8+-ultra.png" width="200">
 Samsung Z Fold
+
 <img src="screenshots/tampilan-samsung-z-fold.png" width="200">
 
 Semantics
+
 <img src="screenshots/semantics.png" width="200">
 
 
