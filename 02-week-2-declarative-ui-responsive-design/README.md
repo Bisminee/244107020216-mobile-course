@@ -1,4 +1,5 @@
 # Tujuan
+
 - Menjelaskan prinsip declarative UI dan hubungan antara widget, konfigurasi, serta state.
 - Menggunakan StatelessWidget, StatefulWidget, Container, Row, Column, dan Expanded.
 - Membedakan komponen Material 3 dan Cupertino untuk kebutuhan platform yang berbeda.
@@ -6,6 +7,7 @@
 - Menerapkan theme, dark mode, styling, dan aksesibilitas dasar.
 
 # Fitur Utama
+
 - row
 - column
 - MaterialApp
@@ -13,12 +15,13 @@
 - Theme
 
 # Tech Stack
+
 - Flutter
 
 # Cara Menjalankan
 
-
 # Hasil
+
 - Dapat menjelaskan prinsip Declarative UI dan hubungan antara widget, konfigurasim serta state
 - Bisa menggunakan StatelessWidget, StatefulWidget, COntainer, Row, Column, dan Expanded
 - Bisa membedakan komponen material3 dan Cupertino
@@ -26,18 +29,20 @@
 - Bisa menerapkan dark mode, styling, dan aksesibilitas dasar
 
 # Refleksi
+
 - native lebih cocok digunakan ketika memilki kebutuhan khusus untuk menghubungkan aplikasi dengan sistem operasi langsung, misal membutuhkan akses BLE
 
 - Perubahan state berhubungan dengan widget tree dan UI deklaratif, dengan berubahnya state, maka susunan widget tree juga bisa berubah(terbentuk baru), dengan demikian UI deklaratifnya juga berubah
 
 - commit kecil dengan pesan jelas bermanfaat bagi tim untuk memantau update yang diberikan anggota sehingga bisa melanjutkan pekerjaan yang ada, sedangkan untuk portofolio membantu untuk memperlihatkan kontribusi terhadap projek
 
-
 # Screenshot
-Kode Warm Up 
+
+Kode Warm Up
 
 <p align="center">
 <img src="screenshots/kode-warmup1.png" width="350">
+<br>
 <img src="screenshots/kode-warmup2.png" width="350">
   </p>
 
@@ -46,6 +51,7 @@ Hasil Warm Up
 <img src="screenshots/warmup.png" width="350">
 
 ## Eksperimen Warm Up
+
 <img src="screenshots/hapus-expanded.png" width="350">
 tidak bisa dijalankan dan tidak ada peringatan overflow
 
@@ -90,7 +96,3 @@ Samsung Z Fold
 Semantics
 
 <img src="screenshots/semantics.png" width="200">
-
-
-
-
