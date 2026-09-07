@@ -41,10 +41,10 @@
 Kode Warm Up
 
 <p align="center">
-<img src="screenshots/kode-warmup1.png" width="350">
-<br>
-<img src="screenshots/kode-warmup2.png" width="350">
-  </p>
+    <img src="screenshots/kode-warmup1.png" width="350">
+    <br>
+    <img src="screenshots/kode-warmup2.png" width="350">
+</p>
 
 Hasil Warm Up
 
