@@ -65,19 +65,35 @@ cara menjalankannya tergantung pada tujuan, jika tujuannya melakukan debug, lebi
 
 
 # Screenshot
-Praktikum 1
+## Praktikum 1
 
 add go_router
-<img src="screenshots/pub_add_go_router.png" width="350">
+<img src="screenshots/P1/pub_add_go_router.png" width="350">
 
 kode main
-<img src="screenshots/kode_praktikum1_main.png" width="350">
+<img src="screenshots/P1/kode_praktikum1_main.png" width="350">
 
 kode home_page
-<img src="screenshots/kode_praktikum1_home_page.png" width="350">
+<img src="screenshots/P1/kode_praktikum1_home_page.png" width="350">
 
 kode detail_page
-<img src="screenshots/kode_praktikum1_detail_page.png" width="350">
+<img src="screenshots/P1/kode_praktikum1_detail_page.png" width="350">
 
 hasil kode
-<img src="screenshots/hasil_praktikum1.png" width="350">
+<img src="screenshots/P1/hasil_praktikum1.png" width="350">
+
+
+## Praktikum 2
+
+Kode Main
+<img src="screenshots/P2/kode_main_prak2.png" width="350">
+
+Kode Providers
+<img src="screenshots/P2/kode_provider_prak2.png" width="350">
+
+Kode Pages
+<img src="screenshots/P2/kode_pages_prak2.png" width="350">
+
+
+Hasil Kode
+<img src="screenshots/P2/hasil_prak2.png" width="350">
