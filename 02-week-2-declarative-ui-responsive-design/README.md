@@ -120,7 +120,8 @@ Semantics
 
 
 Hasil kode AI
-<img src="screenshots/Hasil_kode_AI.png" width="400">
+
+<img src="screenshots/Hasil_kode_AI.png" width="200">
 
 kalau diihat dari hasilnya tampilan menjadi lebih responsive, lalu tidak butuh 2 import package
 
