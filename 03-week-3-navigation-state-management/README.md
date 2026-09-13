@@ -30,10 +30,10 @@ logika bisa diuji tanpa membangun UI;
 state tetap hidup meski widget sudah tidak tampil.
 Pada mata kuliah ini kita menggunakan Riverpod berbasis `Provider` yang bersifat compile-safe, tidak bergantung pada `BuildContext`, dan mudah diuji.
 
-Konsep inti Riverpod
+Konsep inti Riverpod:
 
-|Konsep     |Penjelasan|
-|-----------|----------|
+|Konsep     |Penjelasan                                             |
+|-----------|-------------------------------------------------------|
 |ProviderScope|	Wadah global yang menyimpan semua provider, membungkus root aplikasi.|
 |Provider|	Nilai read-only/immutable (misal konfigurasi, service).|
 |Notifier + NotifierProvider|	State yang bisa berubah melalui method; UI memanggil method, bukan mengubah state langsung.|
