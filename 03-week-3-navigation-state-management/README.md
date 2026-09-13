@@ -45,27 +45,19 @@ cara menjalankannya tergantung pada tujuan, jika tujuannya melakukan debug, lebi
 
 
 # Screenshot
-Latihan madiri persegi panjang
+Praktikum 1
 
-<img src="screenshots/persegi_panjang.png" width="350">
+add go_router
+<img src="screenshots/pub_add_go_router.png" width="350">
 
-Lathihan profil mahasiswa
+kode main
+<img src="screenshots/kode_praktikum1_main.png" width="350">
 
-<img src="screenshots/profil_mahasiswa.png" width="350">
+kode home_page
+<img src="screenshots/kode_praktikum1_home_page.png" width="350">
 
-Kode Praktikum
+kode detail_page
+<img src="screenshots/kode_praktikum1_detail_page.png" width="350">
 
-<img src="screenshots/kode_praktikum.png" width="350">
-
-Hasil Akhir praktikum
-
-<img src="screenshots/88934c28-f0cf-4b14-a68e-1e1ec33122a9.jpg" width="200">
-
-Kode Mini Assignment
-
-<img src="screenshots/kode_mini_assignment.png" width="350">
-
-Hasil Mini Assignment
-
-<img src="task/hasil_mini_assignment.jpg" width="200">
-
+hasil kode
+<img src="screenshots/hasil_praktikum1.png" width="350">
