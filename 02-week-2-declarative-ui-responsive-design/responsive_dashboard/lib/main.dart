@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+const double kWideBreakpoint = 600.0;
+
 void main() {
   runApp(const DashboardApp());
 }
@@ -25,7 +27,7 @@ class _DashboardAppState extends State<DashboardApp> {
         brightness: Brightness.dark,
         colorSchemeSeed: Colors.indigo,
       ),
-      themeMode: isDark ? ThemeMode.system : ThemeMode.light,
+      themeMode: isDark ? ThemeMode.dark : ThemeMode.light,
       home: DashboardPage(
         isDark: isDark,
         onDarkChanged: (value) {
@@ -75,7 +77,7 @@ class DashboardPage extends StatelessWidget {
       body: SafeArea(
         child: LayoutBuilder(
           builder: (context, constraints) {
-            final int crossAxisCount = constraints.maxWidth < 600 ? 1 : 2;
+            final int crossAxisCount = constraints.maxWidth < kWideBreakpoint ? 1 : 2;
 
             return GridView.builder(
               padding: const EdgeInsets.all(16),
