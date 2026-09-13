@@ -113,6 +113,15 @@ Semantics
 <img src="screenshots/AI6.png" width="400">
 <img src="screenshots/AI7.png" width="400">
 
+# Kode AI
+
+<img src="screenshots/kode_AI1.png" width="400">
+<img src="screenshots/kode_AI2.png" width="400">
+
+
+Hasil kode AI
+<img src="screenshots/Hasil_kode_AI.png" width="400">
+
 
 
 
