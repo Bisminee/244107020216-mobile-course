@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 
 void main() {
   runApp(const DashboardApp());
@@ -57,58 +56,52 @@ class DashboardPage extends StatelessWidget {
         title: Text("${StudentName}'s Dashboard"),
         actions: [
           Row(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              const SizedBox(width: 4),
-
-              Semantics(
-                label: 'Mode malam',
-                value: 'Aktif',
-                hint: 'Ketuk untuk mengubah mode',
-                child: Icon(isDark ? Icons.dark_mode : Icons.light_mode),
+              Icon(
+                isDark ? Icons.dark_mode : Icons.light_mode,
+                semanticLabel: isDark
+                    ? 'Mode gelap aktif'
+                    : 'Mode terang aktif',
               ),
-              CupertinoSwitch(value: isDark, onChanged: onDarkChanged),
-              const SizedBox(width: 12),
+
+              Switch(value: isDark, onChanged: onDarkChanged),
+
+              const SizedBox(width: 8),
             ],
           ),
         ],
       ),
-      body: LayoutBuilder(
-        builder: (context, constraints) {
-          if (constraints.maxWidth < 700) {
-            return Column(
-              children: [
-                DashboardCard(title: 'Assignments', value: '8'),
-                DashboardCard(title: 'Attendance', value: '92%'),
-                DashboardCard(title: 'Portfolio', value: 'Ready'),
-                DashboardCard(title: 'Current Week', value: '02'),
-              ],
+      body: SafeArea(
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final int crossAxisCount = constraints.maxWidth < 600 ? 1 : 2;
+
+            return GridView.builder(
+              padding: const EdgeInsets.all(16),
+
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: crossAxisCount,
+                crossAxisSpacing: 16,
+                mainAxisSpacing: 16,
+                childAspectRatio: crossAxisCount == 1 ? 3.2 : 1.8,
+              ),
+
+              itemCount: 4,
+
+              itemBuilder: (context, index) {
+                final cards = [
+                  const DashboardCard(title: 'Assignments', value: '8'),
+                  const DashboardCard(title: 'Attendance', value: '92%'),
+                  const DashboardCard(title: 'Portfolio', value: 'Ready'),
+                  const DashboardCard(title: 'Current Week', value: '02'),
+                ];
+
+                return cards[index];
+              },
             );
-          }
-          return Column(
-            children: [
-              Row(
-                children: [
-                  Expanded(
-                    child: DashboardCard(title: 'Assignments', value: '8'),
-                  ),
-                  Expanded(
-                    child: DashboardCard(title: 'Attendance', value: '92%'),
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    child: DashboardCard(title: 'Portfolio', value: 'Ready'),
-                  ),
-                  Expanded(
-                    child: DashboardCard(title: 'Current Week', value: '02'),
-                  ),
-                ],
-              ),
-            ],
-          );
-        },
+          },
+        ),
       ),
     );
   }
@@ -122,101 +115,37 @@ class DashboardCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Row(
-          children: [
-            Expanded(child: Text(title)),
-            Text(value, style: Theme.of(context).textTheme.headlineSmall),
-          ],
+    return Semantics(
+      container: true,
+      label: '$title: $value',
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Row(
+            children: [
+              Expanded(
+                child: Text(
+                  title,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+              ),
+
+              const SizedBox(width: 16),
+
+              Flexible(
+                child: Text(
+                  value,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.end,
+                  style: Theme.of(context).textTheme.headlineSmall,
+                ),
+              ),
+            ],
+          ),
         ),
-      ),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: .center,
-          children: [
-            const Text('You have pushed the button this many times:'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
       ),
     );
   }
