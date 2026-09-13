@@ -124,6 +124,8 @@ Hasil kode AI
 
 kalau diihat dari hasilnya tampilan menjadi lebih responsive, lalu tidak butuh 2 import package
 
+<img src="screenshots/hasil_analyze.png" width="400">
 
+# Testing dasar
 
-
+<img src="screenshots/hasil_flutter_test.png" width="600">
