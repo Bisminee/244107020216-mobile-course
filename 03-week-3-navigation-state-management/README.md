@@ -40,6 +40,21 @@ Konsep inti Riverpod:
 |ConsumerWidget|	Widget yang bisa membaca provider lewat ref.|
 |ref.watch vs ref.read| watch: build ulang saat state berubah (di dalam build). read: sekali baca (di callback/event).|
 
+### AsyncValue: loading, error, success
+Masalah state asinkron
+Banyak state berasal dari proses asinkron (membaca database, memanggil API). UI harus menampilkan tiga kemungkinan: loading (proses berjalan), error (gagal), dan success (data siap). Mengelola tiga flag boolean secara manual rawan kesalahan (`isLoading` dan `hasError` bisa tidak konsisten).
+
+AsyncValue
+Riverpod menyediakan `AsyncValue<T>` yang memodelkan ketiga kondisi tersebut dalam satu tipe. Gunakan `AsyncNotifier` untuk state asinkron:
+
+<img src="screenshots/P3/Async.png" width="350">
+
+Di sisi UI, `AsyncValue` dapat dipola dengan `when` atau `if-case` matching:
+
+<img src="screenshots/P3/pola_async.png" width="350">
+
+
+
 # Tech Stack
 - Flutter
 - Dart
