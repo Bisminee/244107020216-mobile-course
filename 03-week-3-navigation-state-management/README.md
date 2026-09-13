@@ -10,12 +10,15 @@
 Navigation, mekanisme pindah layar. di flutter tiap layar adalah route yang ditumpuk di `Navigator`(stack). cara lama menggunakan `Navigator.push` dan `Navigator.pop` 
 
 GoRouter adalah router deklaratif dengan konsep
-GoRoute	            Definisi path dan widget tujuan, misal /, /detail/:id.
-context.go()	    Pindah route (mengganti stack, cocok untuk redirect login).
-context.push()	    Tumpuk route baru di atas stack (cocok untuk detail).
-path parameter	    Nilai dinamis pada path, diakses lewat state.pathParameters.
-extra	            Mengirim objek antar route (gunakan hati-hati, tidak tersimpan saat proses restart web).
-redirect	        Guard navigasi terpusat, misal cek status login.
+
+|Konsep         |Penjelasan                                         |
+|---------------|---------------------------------------------------|
+|GoRoute        |	Definisi path dan widget tujuan, misal /, /detail/:id.|
+|context.go()   |	Pindah route (mengganti stack, cocok untuk redirect login).|
+|context.push() |	Tumpuk route baru di atas stack (cocok untuk detail).|
+|path parameter |	Nilai dinamis pada path, diakses lewat state.pathParameters.|
+|extra          |	Mengirim objek antar route (gunakan hati-hati, tidak tersimpan saat proses restart web).|
+|redirect       |	Guard navigasi terpusat, misal cek status login.|
 
 # Tech Stack
 - Flutter
