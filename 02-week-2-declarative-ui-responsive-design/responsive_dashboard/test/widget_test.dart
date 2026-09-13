@@ -11,20 +11,43 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:responsive_dashboard/main.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
+  testWidgets('Dashboard satu kolom di layar sempit', (
+    WidgetTester tester,
+  ) async {
+    tester.view.physicalSize = const Size(
+      400,
+      800,
+    ); // Set the screen size to a narrow width
+    tester.view.devicePixelRatio = 1.0; // Set the device pixel ratio
+    addTearDown(tester.view.reset);
     // Build our app and trigger a frame.
     await tester.pumpWidget(const DashboardApp());
+    final width = tester.getSize(
+      find.widgetWithText(DashboardCard, 'Assignments'),
+    );
+    expect(
+      find.byType(DashboardCard),
+      findsNWidgets(4),
+    ); // Expect the width of the card to be less
+  });
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
-
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
-
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+  testWidgets('Dashboard dua kolom di layar lebar', (
+    WidgetTester tester,
+  ) async {
+    tester.view.physicalSize = const Size(
+      1200,
+      800,
+    ); // Set the screen size to a wide width
+    tester.view.devicePixelRatio = 1.0; // Set the device pixel ratio
+    addTearDown(tester.view.reset);
+    // Build our app and trigger a frame.
+    await tester.pumpWidget(const DashboardApp());
+    final width = tester.getSize(
+      find.widgetWithText(DashboardCard, 'Assignments'),
+    );
+    expect(
+      find.byType(DashboardCard),
+      findsNWidgets(4),
+    ); // Expect the width of the card to be greater
   });
 }

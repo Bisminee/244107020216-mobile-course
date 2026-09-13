@@ -49,13 +49,13 @@ class DashboardPage extends StatelessWidget {
 
   final bool isDark;
   final ValueChanged<bool> onDarkChanged;
-  final String StudentName = 'Bisma'; // Replace with your actual name
+  final String studentName = 'Bisma'; // Replace with your actual name
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("${StudentName}'s Dashboard"),
+        title: Text("$studentName's Dashboard"),
         actions: [
           Row(
             mainAxisSize: MainAxisSize.min,
