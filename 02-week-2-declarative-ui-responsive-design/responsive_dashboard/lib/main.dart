@@ -48,12 +48,13 @@ class DashboardPage extends StatelessWidget {
 
   final bool isDark;
   final ValueChanged<bool> onDarkChanged;
+  final String StudentName = 'Bisma'; // Replace with your actual name
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Student Dashboard'),
+        title: Text("${StudentName}'s Dashboard"),
         actions: [
           Row(
             children: [
@@ -73,18 +74,38 @@ class DashboardPage extends StatelessWidget {
       ),
       body: LayoutBuilder(
         builder: (context, constraints) {
-          final columns = constraints.maxWidth > 700 ? 2 : 1;
-          return GridView.count(
-            padding: const EdgeInsets.all(16),
-            crossAxisCount: columns,
-            crossAxisSpacing: 16,
-            mainAxisSpacing: 16,
-            childAspectRatio: 2.6,
-            children: const [
-              DashboardCard(title: 'Assignments', value: '8'),
-              DashboardCard(title: 'Attendance', value: '92%'),
-              DashboardCard(title: 'Portfolio', value: 'Ready'),
-              DashboardCard(title: 'Current Week', value: '02'),
+          if (constraints.maxWidth < 700) {
+            return Column(
+              children: [
+                DashboardCard(title: 'Assignments', value: '8'),
+                DashboardCard(title: 'Attendance', value: '92%'),
+                DashboardCard(title: 'Portfolio', value: 'Ready'),
+                DashboardCard(title: 'Current Week', value: '02'),
+              ],
+            );
+          }
+          return Column(
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: DashboardCard(title: 'Assignments', value: '8'),
+                  ),
+                  Expanded(
+                    child: DashboardCard(title: 'Attendance', value: '92%'),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: DashboardCard(title: 'Portfolio', value: 'Ready'),
+                  ),
+                  Expanded(
+                    child: DashboardCard(title: 'Current Week', value: '02'),
+                  ),
+                ],
+              ),
             ],
           );
         },

@@ -17,6 +17,14 @@
 
 # Cara Menjalankan
 
+1. Pastikan Flutter sudah terinstall.
+2. Clone repository ini.
+3. Masuk ke folder project.
+`cd nama-project`
+4. Jalankan perintah berikut untuk mengambil dependency:
+`flutter pub get`
+5. Jalankan aplikasi:
+`flutter run`
 
 # Hasil
 - Dapat menjelaskan prinsip Declarative UI dan hubungan antara widget, konfigurasim serta state
@@ -26,11 +34,14 @@
 - Bisa menerapkan dark mode, styling, dan aksesibilitas dasar
 
 # Refleksi
-- native lebih cocok digunakan ketika memilki kebutuhan khusus untuk menghubungkan aplikasi dengan sistem operasi langsung, misal membutuhkan akses BLE
+- imperative lebih berfokus pada langkah atau proses bagaimana UI diubah, sedangkan declarative lebih berfokus pada seperti apa UI yang diinginkan berdasarkan kondisi atau state yang ada
 
-- Perubahan state berhubungan dengan widget tree dan UI deklaratif, dengan berubahnya state, maka susunan widget tree juga bisa berubah(terbentuk baru), dengan demikian UI deklaratifnya juga berubah
+- `Expanded` membantu ketika ingin membagi ruang yang tersedia pada `Row` atau `Column` secara fleksibel, tetapi bisa menghasilkan layout error ketika digunakan pada parent yang tidak memiliki batas ukuran yang jelas atau constraint yang sesuai
 
-- commit kecil dengan pesan jelas bermanfaat bagi tim untuk memantau update yang diberikan anggota sehingga bisa melanjutkan pekerjaan yang ada, sedangkan untuk portofolio membantu untuk memperlihatkan kontribusi terhadap projek
+- breakpoint memengaruhi bagaimana layout menyesuaikan ukuran layar, misalnya pada layar kecil menggunakan satu kolom dan pada layar lebih besar menggunakan dua kolom, sedangkan theme memengaruhi tampilan seperti warna dan dark mode sehingga tampilan dapat menyesuaikan kebutuhan dan kondisi pengguna
+
+- rekomendasi dari AI perlu diverifikasi dengan mencoba menjalankan kode dan melihat hasilnya secara langsung, terutama memastikan tidak terjadi error atau overflow, serta memastikan hasilnya sesuai dengan kebutuhan dan memahami kode yang diberikan sebelum digunakan
+
 
 
 # Screenshot
@@ -91,6 +102,16 @@ Samsung Z Fold
 Semantics
 
 <img src="screenshots/semantics.png" width="200">
+
+# Tugas dan AI design exploration
+
+<img src="screenshots/AI1.png" width="300">
+<img src="screenshots/AI2.png" width="300">
+<img src="screenshots/AI3.png" width="300">
+<img src="screenshots/AI4.png" width="300">
+<img src="screenshots/AI5.png" width="300">
+<img src="screenshots/AI6.png" width="300">
+<img src="screenshots/AI7.png" width="300">
 
 
 
