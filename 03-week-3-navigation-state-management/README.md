@@ -7,9 +7,10 @@
 
 
 # Fitur Utama
-Navigation, mekanisme pindah layar. di flutter tiap layar adalah route yang ditumpuk di `Navigator`(stack). cara lama menggunakan `Navigator.push` dan `Navigator.pop` 
+### Navigation
+mekanisme pindah layar. di flutter tiap layar adalah route yang ditumpuk di `Navigator`(stack). cara lama menggunakan `Navigator.push` dan `Navigator.pop` 
 
-GoRouter adalah router deklaratif dengan konsep
+GoRouter adalah router deklaratif dengan konsep:
 
 |Konsep         |Penjelasan                                         |
 |---------------|---------------------------------------------------|
@@ -19,6 +20,25 @@ GoRouter adalah router deklaratif dengan konsep
 |path parameter |	Nilai dinamis pada path, diakses lewat state.pathParameters.|
 |extra          |	Mengirim objek antar route (gunakan hati-hati, tidak tersimpan saat proses restart web).|
 |redirect       |	Guard navigasi terpusat, misal cek status login.|
+
+
+### State Management dengan Riverpod
+`setState` cukup untuk state lokal satu widget. Namun ketika state harus dibagi antar banyak halaman (misal daftar ToDo yang ditampilkan di Home dan diubah di halaman lain), memindahkan state ke atas widget tree membuat kode rumit (prop drilling). State management memindahkan state keluar dari widget sehingga:
+
+UI dapat dibangun ulang dari state yang sama secara konsisten (UI deklaratif = f(state));
+logika bisa diuji tanpa membangun UI;
+state tetap hidup meski widget sudah tidak tampil.
+Pada mata kuliah ini kita menggunakan Riverpod berbasis `Provider` yang bersifat compile-safe, tidak bergantung pada `BuildContext`, dan mudah diuji.
+
+Konsep inti Riverpod
+
+|Konsep     |Penjelasan|
+|-----------|----------|
+|ProviderScope|	Wadah global yang menyimpan semua provider, membungkus root aplikasi.|
+|Provider|	Nilai read-only/immutable (misal konfigurasi, service).|
+|Notifier + NotifierProvider|	State yang bisa berubah melalui method; UI memanggil method, bukan mengubah state langsung.|
+|ConsumerWidget|	Widget yang bisa membaca provider lewat ref.|
+|ref.watch vs ref.read| watch: build ulang saat state berubah (di dalam build). read: sekali baca (di callback/event).|
 
 # Tech Stack
 - Flutter
