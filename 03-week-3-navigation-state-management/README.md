@@ -79,6 +79,54 @@ cara menjalankannya tergantung pada tujuan, jika tujuannya melakukan debug, lebi
 - commit kecil dengan pesan jelas bermanfaat bagi tim untuk memantau update yang diberikan anggota sehingga bisa melanjutkan pekerjaan yang ada, sedangkan untuk portofolio membantu untuk memperlihatkan kontribusi terhadap projek
 
 
+# AI Challenge
+
+## Prompt yang Digunakan
+    Buatkan halaman Flutter bernama StatsPage menggunakan flutter_riverpod.
+    Requirements:
+    - ConsumerWidget dengan satu AsyncNotifierProvider yang mensimulasikan
+      pengambilan data statistik (delay 2 detik, kadang gagal 30%).
+    - UI harus menangani loading (spinner), error (pesan + tombol retry),
+      dan success (ListView 3 item).
+    - Berikan unit test untuk notifier-nya.
+    Jelaskan setiap bagian kode dalam komentar.
+
+## Hasil dan Penjelasan Kode
+Kode ditempatkan pada project `week3_todo`:
+
+- `lib/providers/stats_provider.dart` berisi model `Stat`, `StatsNotifier` (turunan `AsyncNotifier<List<Stat>>`), dan `statsProvider` (`AsyncNotifierProvider`).
+  - `build()` dipanggil otomatis Riverpod dan hasilnya dibungkus `AsyncValue` (loading -> data/error).
+  - `_fetch()` mensimulasikan pengambilan data: `await Future.delayed(delay)` lalu gagal dengan peluang `failureRate` (default 0.3).
+  - `delay` dan `failureRate` dibuat sebagai parameter supaya unit test bisa deterministik (tidak bergantung pada random).
+  - `refresh()` memakai `AsyncValue.guard` agar exception otomatis jadi `AsyncError`, tanpa `try/catch` manual.
+
+- `lib/pages/stats_page.dart` berisi `StatsPage` (`ConsumerWidget`) yang memakai `ref.watch(statsProvider)` dan `statsAsync.when(...)` untuk menangani loading (spinner), error (pesan + tombol "Coba lagi" yang memanggil `ref.invalidate`), dan success (ListView 3 item).
+
+- `test/stats_provider_test.dart` berisi 3 unit test: berhasil mengembalikan 3 item, menghasilkan error saat gagal, dan refresh menjalankan ulang provider. Test memakai `ProviderContainer` dengan `overrideWith` agar `failureRate` bisa dipaksa 0 (selalu berhasil) atau 1 (selalu gagal).
+
+## AI Verification Checklist
+- [x] State diubah secara immutable — `build()` mengembalikan list baru, tidak ada `state.add()` atau mutasi list langsung.
+- [x] `ref.watch` hanya di dalam `build`, `ref.read` hanya di callback — `stats_page.dart` memakai `ref.watch` di `build` dan `ref.invalidate` di `onPressed`.
+- [x] Ketiga state `AsyncValue` ditangani — `when(loading:, error:, data:)` semuanya lengkap, bukan hanya success.
+- [x] Provider dideklarasikan dengan tipe eksplisit (`AsyncNotifierProvider<StatsNotifier, List<Stat>>`) dan tidak duplikat dengan provider lain.
+- [x] Tidak memakai API Riverpod lama — sudah memakai `AsyncNotifier` + `ConsumerWidget`, bukan `StateProvider`/`StateNotifierProvider`.
+- [x] `flutter analyze` tanpa issue dan `flutter test` lulus (3 test passed).
+
+## Screenshot AI Challenge
+
+Kode Provider (StatsNotifier)
+<img src="screenshots/P3/ai_challenge_provider.png" width="350">
+
+Kode Halaman (StatsPage)
+<img src="screenshots/P3/ai_challenge_page.png" width="350">
+
+Unit Test Lulus
+<img src="screenshots/P3/ai_challenge_test.png" width="350">
+
+## Refleksi AI Challenge
+Hasil AI sudah saya verifikasi dengan membaca tiap baris, menjalankan `flutter analyze` dan `flutter test`. Bagian yang saya sesuaikan adalah menambahkan parameter `delay` dan `failureRate` pada `StatsNotifier`, karena desain awal dengan `Random` langsung membuat unit test tidak dapat diprediksi (flaky). Dengan parameter tersebut test menjadi deterministik dan tetap memenuhi syarat "kadang gagal 30%" pada aplikasi (default `failureRate = 0.3`).
+
+
 # Screenshot
 ## Praktikum 1
 
