@@ -112,3 +112,33 @@ Kode Pages
 
 Hasil Kode
 <img src="screenshots/P2/hasil_prak2.png" width="350">
+
+## Praktikum 3
+
+Kode AsyncValue
+<img src="screenshots/P3/Async.png" width="350">
+
+
+Kode Pola Async
+<img src="screenshots/P3/pola_async.png" width="350">
+
+
+Hasil
+<img src="screenshots/P3/hasil_kode_async.png" width="350">
+
+
+Throw Exception
+<img src="screenshots/P3/throw_exception.png" width="350">
+
+    Mengapa menampilkan ulang data lama (stale data) dengan indikator refresh kadang lebih baik daripada mengosongkan layar? Kapan pola itu penting?
+
+1. Mencegah layar kosong/berkedip — mengosongkan layar membuat UI "melompat" (loading spinner menggantikan konten), yang terasa lebih lambat dan mengganggu.
+2. Menjaga konteks pengguna — pengguna masih bisa melihat data sebelumnya saat menunggu update, alih-alih kehilangan informasi.
+3. Kontinuitas persepsi — persepsi "cepat" lebih terjaga; pengguna melihat progress tanpa kehilangan isi layar.
+Kapan pola ini penting:
+- Pada refresh/pull-to-refresh data yang sudah pernah tampil (mis. daftar tugas, feed, dashboard statistik) — data lama tetap relevan sementara data baru dimuat.
+- Saat koneksi lambat/tidak stabil — lebih baik tampilkan data terakhir daripada error/kosong.
+- Pada aplikasi offline-first — tampilkan cache lokal dulu, lalu sinkronkan.
+    Sebaliknya, mengosongkan layar (full loading) lebih tepat saat memuat pertama kali (belum ada data) atau saat data lama sudah tidak valid/berbeda konteks (mis. pindah akun/user), sehingga menampilkan data lama justru menyesatkan.
+    
+    Riverpod mendukung ini lewat AsyncValue yang menyimpan nilai sebelumnya — misalnya productsAsync.isRefreshing / asyncValue.valueOrNull untuk tetap menampilkan data lama sambil memuat.
