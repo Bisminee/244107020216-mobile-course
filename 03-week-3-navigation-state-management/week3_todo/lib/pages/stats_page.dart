@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../providers/stats_provider.dart';
 
@@ -41,6 +42,17 @@ class StatsPage extends ConsumerWidget {
             trailing: Text('${stats[index].value}'),
           ),
         ),
+      ),
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: 1,
+        onDestinationSelected: (index) {
+          if (index == 0) context.go('/');
+        },
+        destinations: const [
+          NavigationDestination(icon: Icon(Icons.list), label: 'ToDo'),
+          NavigationDestination(
+              icon: Icon(Icons.bar_chart), label: 'Statistik'),
+        ],
       ),
     );
   }

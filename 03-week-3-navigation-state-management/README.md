@@ -56,27 +56,70 @@ Di sisi UI, `AsyncValue` dapat dipola dengan `when` atau `if-case` matching:
 
 
 # Tech Stack
-- Flutter
-- Dart
+- Flutter 3.44.4 / Dart 3.12.2
+- `go_router` ^17.5.0 (navigasi deklaratif)
+- `flutter_riverpod` ^3.4.3 (state management)
 
 # Cara Menjalankan
-cara menjalankannya tergantung pada tujuan, jika tujuannya melakukan debug, lebih mudah menggunakan run debug karena adanya hot reload. jika tujuannya testing lebih baik langsung run flutternya
+Project utama berada pada folder `week3_todo`.
+
+1. Masuk ke folder project.
+`cd week3_todo`
+2. Ambil dependency.
+`flutter pub get`
+3. Jalankan aplikasi (mode debug agar bisa hot reload).
+`flutter run`
+4. Menjalankan test.
+`flutter test`
+5. Cek kualitas kode.
+`flutter analyze`
+
+Untuk debug gunakan run debug agar bisa hot reload; untuk memverifikasi hasil gunakan `flutter test`.
 
 # Hasil
-- Mengetahui Ekosistem mobile dan Flutter
-- Mengetahui dasar Dart dan dasar dari framework Flutter
-- Mengetahui cara Null Handling 
-- Menyiapkan environment untuk git dan FLutter
-- Mampu mengubah UI Default di Flutter
-- Mampu menyiapkan repository untuk pertemuan 16 minggu
-- Mampu mengerjakan mini assignment
+- Mengetahui konsep navigasi, route, dan perbedaan Navigator 1.0 dengan GoRouter.
+- Mampu menerapkan navigasi multi-page dengan GoRouter (`context.go`, path parameter, query).
+- Mengetahui cara kerja state management Riverpod (`ProviderScope`, `Provider`, `Notifier`, `ConsumerWidget`, `ref.watch` vs `ref.read`).
+- Mampu menangani state asinkron (loading, error, success) dengan `AsyncValue` dan `AsyncNotifier`.
+- Mampu membangun aplikasi ToDo dengan navigasi + Riverpod, memisahkan widget (`TodoTile`), dan membuat provider turunan (`filteredTodosProvider`).
+- Memverifikasi hasil dengan `flutter analyze` dan `flutter test` (semua lulus).
+
+# Tugas (Mini Project / Industry Challenge)
+Tugas minggu ini adalah membangun **aplikasi ToDo dengan navigasi dan Riverpod**. Implementasi utama ada pada project `week3_todo`.
+
+Checklist pengerjaan:
+
+1. [x] Minimal 2 halaman dengan GoRouter: `/` untuk daftar tugas (`TodoPage`) dan `/stats` untuk halaman statistik (`StatsPage`) — lihat `lib/main.dart`.
+2. [x] State dikelola Riverpod (`Notifier`), UI memakai `ConsumerWidget` — `TodoListNotifier`/`todoListProvider` di `lib/providers/todo_provider.dart`, dipakai oleh `TodoPage` dan `TodoTile`.
+3. [x] Simulasi asinkron dengan `AsyncValue`: loading (spinner), error (pesan + tombol "Coba lagi"), success (ListView) tampil dengan benar — `StatsNotifier` + `StatsPage` (lihat juga Praktikum 3 dan AI Challenge).
+4. [x] Minimal 1 unit/widget test yang lulus — total 4 test lulus: `test/stats_provider_test.dart` (3 unit test) dan `test/widget_test.dart` (1 widget test).
+5. [x] AI Challenge dikerjakan dan didokumentasikan (prompt, hasil AI, perbaikan, alasan keputusan) — lihat bagian **AI Challenge**.
+6. [x] Struktur report berisi `lib/`, `test/`, `README.md`, dan `screenshots/` pada folder `03-week-3-navigation-state-management/`.
+
+Refactoring Challenge (tambahan):
+- Memisahkan baris ToDo menjadi widget `TodoTile` (`lib/widgets/todo_tile.dart`) agar `build` lebih pendek dan mudah diuji.
+- Mengekstrak logika filter menjadi provider turunan `filteredTodosProvider` yang membaca `todoListProvider` (+ `todoFilterProvider`).
+- Mengintegrasikan ToDo dengan GoRouter: `/` dan `/stats`, serta `NavigationBar` untuk berpindah halaman.
+- `go_router` dipin ke `^17.5.0` karena `18.0.1` menarik `material_ui`/`cupertino_ui` yang memakai `@awaitNotRequired` dan tidak kompatibel dengan Flutter 3.44.4.
+
+Verifikasi: `flutter analyze` tanpa issue, `flutter test` **All tests passed (4)**.
 
 # Refleksi
-- native lebih cocok digunakan ketika memilki kebutuhan khusus untuk menghubungkan aplikasi dengan sistem operasi langsung, misal membutuhkan akses BLE
+- **Kapan `setState` masih cukup, dan kapan state harus naik ke Riverpod?** `setState` cukup untuk state yang lokal pada satu widget dan tidak dipakai widget lain, misalnya animasi, status buka/tutup, atau input sementara. State harus naik ke Riverpod ketika state dibagi antar widget/halaman, harus tetap hidup saat widget sudah tidak tampil, atau logikanya perlu diuji tanpa UI — misalnya daftar ToDo yang ditampilkan di Home dan diubah di halaman lain.
 
-- Perubahan state berhubungan dengan widget tree dan UI deklaratif, dengan berubahnya state, maka susunan widget tree juga bisa berubah(terbentuk baru), dengan demikian UI deklaratifnya juga berubah
+- **Apa perbedaan `context.go` dan `context.push`, dan kapan masing-masing tepat digunakan?** `context.go` mengganti stack (replace), cocok untuk pindah tingkat atas, redirect, atau berpindah tab seperti `/` ke `/stats`. `context.push` menumpuk route baru di atas stack sehingga bisa di-back, cocok untuk membuka halaman detail dari sebuah daftar.
 
-- commit kecil dengan pesan jelas bermanfaat bagi tim untuk memantau update yang diberikan anggota sehingga bisa melanjutkan pekerjaan yang ada, sedangkan untuk portofolio membantu untuk memperlihatkan kontribusi terhadap projek
+- **Bagaimana `AsyncValue` mencegah bug dibanding tiga boolean terpisah?** `AsyncValue<T>` memodelkan loading, error, dan data sebagai satu tipe, sehingga state tidak mungkin berada di dua kondisi sekaligus (misalnya `isLoading` dan `hasError` sama-sama true). `when`/`guard` memaksa UI menangani ketiga kondisi, dan `AsyncValue.guard` otomatis mengubah exception menjadi `AsyncError` tanpa `try/catch` manual.
+
+- **Bagian mana dari hasil AI yang Anda perbaiki, dan mengapa?** Saya menambahkan parameter `delay` dan `failureRate` pada `StatsNotifier`. Desain awal memakai `Random` langsung sehingga unit test tidak deterministik (flaky); dengan parameter tersebut test bisa dipaksa selalu berhasil (`failureRate: 0`) atau selalu gagal (`failureRate: 1`), sementara aplikasi tetap memakai peluang gagal 30%.
+
+# Referensi
+- Slide: [Navigation & State Management](https://drive.google.com/file/d/1NB58_3HbR6pQhPTWG1Kbr4p4bHIcm45B/view)
+- Flutter: [Navigation overview](https://docs.flutter.dev/ui/navigation)
+- [GoRouter package](https://pub.dev/packages/go_router)
+- Riverpod: [Getting started](https://riverpod.dev/docs/introduction/getting_started)
+- Riverpod: [AsyncNotifier dan AsyncValue](https://riverpod.dev/docs/concepts/async_notifiers)
+- [Learn Dart in Y Minutes](https://learnxinyminutes.com/dart/)
 
 
 # AI Challenge

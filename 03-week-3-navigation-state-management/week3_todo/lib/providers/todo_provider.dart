@@ -15,25 +15,51 @@ class TodoListNotifier extends Notifier<List<Todo>> {
 
   void add(String title) => state = [...state, Todo(title)];
 
-  void toggle(int index) {
-    final todos = [...state];
-    todos[index] = todos[index].copyWith(done: !todos[index].done);
-    state = todos;
+  void toggle(Todo todo) {
+    state = [
+      for (final t in state)
+        if (identical(t, todo)) t.copyWith(done: !t.done) else t,
+    ];
   }
 
-  void remove(int index) => state = [...state]..removeAt(index);
+  void remove(Todo todo) {
+    state = state.where((t) => !identical(t, todo)).toList();
+  }
 }
 
 final todoListProvider =
     NotifierProvider<TodoListNotifier, List<Todo>>(TodoListNotifier.new);
 
+enum TodoFilter { all, pending, done }
+
+class FilterNotifier extends Notifier<TodoFilter> {
+  @override
+  TodoFilter build() => TodoFilter.all;
+
+  void set(TodoFilter filter) => state = filter;
+}
+
+final todoFilterProvider =
+    NotifierProvider<FilterNotifier, TodoFilter>(FilterNotifier.new);
+
+final filteredTodosProvider = Provider<List<Todo>>((ref) {
+  final todos = ref.watch(todoListProvider);
+  final filter = ref.watch(todoFilterProvider);
+  switch (filter) {
+    case TodoFilter.all:
+      return todos;
+    case TodoFilter.pending:
+      return todos.where((t) => !t.done).toList();
+    case TodoFilter.done:
+      return todos.where((t) => t.done).toList();
+  }
+});
+
 class ProductsNotifier extends AsyncNotifier<List<String>> {
   @override
   Future<List<String>> build() async {
-    await Future.delayed(const Duration(seconds: 2)); // simulasi network
+    await Future.delayed(const Duration(seconds: 2));
     return ['Keyboard', 'Mouse', 'Monitor'];
-    // throw Exception("Gagal terhubung ke server");
-
   }
 
   Future<void> refresh() async {
