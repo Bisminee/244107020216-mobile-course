@@ -127,13 +127,48 @@ lib/
     - Satu unit test untuk fromJson dengan field yang hilang.
     Jelaskan setiap bagian kode dalam komentar.
 
+## Hasil dan Penjelasan Kode
+Kode AI Challenge ditempatkan pada project `week4_api`:
+
+- `lib/data/models/comment.dart` berisi model `Comment` (postId, id, name, email, body) dengan `fromJson` aman null. Setiap field memakai pola `(json['id'] as num?)?.toInt() ?? 0` dan `json['name'] as String? ?? ''`, sehingga respons API yang tidak lengkap tidak membuat aplikasi crash.
+
+- `lib/data/repositories/comment_repository.dart` berisi `CommentRepository` dengan method `fetchComments(postId)` yang memanggil `GET /comments?postId={id}` dan memasang `receiveTimeout` 10 detik. Repository adalah satu-satunya pintu ke API; exception dibiarkan naik agar provider mengubahnya menjadi `AsyncError`.
+
+- `lib/data/comment_providers.dart` berisi `commentRepositoryProvider` (memakai `dioProvider` yang sama sehingga base URL/timeout tetap terpusat), `CommentListNotifier` (`AsyncNotifier<List<Comment>>`) dengan `AsyncNotifierProvider`, serta `friendlyCommentErrorMessage` yang memetakan `DioExceptionType` (timeout, connectionError, badResponse 404/500) ke pesan ramah pengguna. Retry otomatis dimatikan agar error langsung final dan mudah diuji.
+
+- `lib/pages/comment_page.dart` berisi `CommentPage` (`ConsumerWidget`) yang menampilkan empat state: loading (spinner), error (pesan ramah + tombol "Coba lagi"), empty, dan success (daftar komentar).
+
+- `test/comment_test.dart` berisi 5 unit test: `fromJson` aman terhadap field yang hilang, mapping pesan timeout, mapping pesan 404 & 500, provider sukses dengan repository palsu, dan provider error dengan repository palsu (tanpa HTTP sungguhan).
+
 ## AI Verification Checklist
-- [ ] UI memanggil Dio lewat repository, bukan langsung dari widget.
-- [ ] `fromJson` aman null, tidak memakai cast langsung yang bisa crash.
-- [ ] Semua tipe `DioExceptionType` (timeout, connectionError, badResponse) dipetakan ke pesan pengguna.
-- [ ] `baseUrl`/timeout terpusat di satu client, bukan tersebar di tiap method.
-- [ ] Test menguji kasus field hilang / edge case, bukan hanya happy path.
-- [ ] `flutter analyze` dan `flutter test` lolos tanpa warning.
+- [x] UI memanggil Dio lewat repository, bukan langsung dari widget — `CommentPage` hanya membaca `commentListProvider`; akses jaringan hanya di `CommentRepository`.
+- [x] `fromJson` aman null — memakai `as num?`/`as String?` dengan fallback, bukan cast langsung. **Temuan:** `Post.fromJson` pada kode codelab awal masih memakai cast langsung (`as int`) sehingga bisa crash; saya perbaiki menjadi aman null agar konsisten.
+- [x] Semua tipe `DioExceptionType` dipetakan — `friendlyCommentErrorMessage` menangani timeout, `connectionError`, dan `badResponse` (404 & 500).
+- [x] `baseUrl`/timeout terpusat — `createDio()` di `api_client.dart`; repository komentar memakai `dioProvider` yang sama.
+- [x] Test menguji edge case — ada test field hilang, mapping error, dan provider gagal, bukan hanya happy path.
+
+## Screenshot AI Challenge
+
+Kode model Comment
+<img src="screenshots/ai_comment_model.png" width="350">
+
+Kode repository Comment
+<img src="screenshots/ai_comment_repository.png" width="350">
+
+Kode provider + pesan error
+<img src="screenshots/ai_comment_provider.png" width="350">
+
+Unit test
+<img src="screenshots/ai_comment_test.png" width="350">
+
+Hasil di aplikasi (loading, success, error)
+<img src="screenshots/loading.png" width="350">
+<img src="screenshots/sukes.png" width="350">
+<img src="screenshots/eror.png" width="350">
+
+
+## Refleksi AI Challenge
+Hasil AI sudah diverifikasi dengan membaca tiap baris, menjalankan `flutter analyze`, dan `flutter test`. Perbaikan yang saya lakukan: (1) memastikan `fromJson` aman null, termasuk memperbaiki `Post.fromJson` yang masih memakai cast langsung; (2) menambahkan `receiveTimeout` 10 detik eksplisit pada repository komentar; (3) mematikan retry otomatis agar error langsung final dan test tidak menggantung; dan (4) menambah test edge case (field hilang, 404, 500, provider gagal) agar tidak hanya menguji happy path.
 
 
 # Refleksi

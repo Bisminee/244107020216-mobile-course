@@ -12,10 +12,10 @@ class Post {
   final String body;
 
   factory Post.fromJson(Map<String, dynamic> json) => Post(
-    userId: json['userId'] as int,
-    id: json['id'] as int,
-    title: json['title'] as String,
-    body: json['body'] as String,
+    userId: (json['userId'] as num?)?.toInt() ?? 0,
+    id: (json['id'] as num?)?.toInt() ?? 0,
+    title: json['title'] as String? ?? '',
+    body: json['body'] as String? ?? '',
   );
   
   Map<String, dynamic> toJson() => {
