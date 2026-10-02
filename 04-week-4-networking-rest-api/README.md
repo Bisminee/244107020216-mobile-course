@@ -149,26 +149,41 @@ Kode AI Challenge ditempatkan pada project `week4_api`:
 
 ## Screenshot AI Challenge
 
-Kode model Comment
-<img src="screenshots/ai_comment_model.png" width="350">
-
 Kode repository Comment
-<img src="screenshots/ai_comment_repository.png" width="350">
+<img src="screenshots/comment_repository.png" width="350">
 
-Kode provider + pesan error
-<img src="screenshots/ai_comment_provider.png" width="350">
-
-Unit test
-<img src="screenshots/ai_comment_test.png" width="350">
+Kode provider Comment + pesan error
+<img src="screenshots/comment_providers.png" width="350">
 
 Hasil di aplikasi (loading, success, error)
 <img src="screenshots/loading.png" width="350">
 <img src="screenshots/sukes.png" width="350">
 <img src="screenshots/eror.png" width="350">
+<img src="screenshots/comment_success.png" width="350">
+<img src="screenshots/comment_error.png" width="350">
 
 
 ## Refleksi AI Challenge
 Hasil AI sudah diverifikasi dengan membaca tiap baris, menjalankan `flutter analyze`, dan `flutter test`. Perbaikan yang saya lakukan: (1) memastikan `fromJson` aman null, termasuk memperbaiki `Post.fromJson` yang masih memakai cast langsung; (2) menambahkan `receiveTimeout` 10 detik eksplisit pada repository komentar; (3) mematikan retry otomatis agar error langsung final dan test tidak menggantung; dan (4) menambah test edge case (field hilang, 404, 500, provider gagal) agar tidak hanya menguji happy path.
+
+
+# Refactoring Challenge
+- Ekstrak baris post menjadi widget `PostTile` (`lib/widgets/post_tile.dart`) agar `ListView.builder` pendek dan mudah diuji; dipakai di `post_list_page.dart` dan `paged_post_page.dart`.
+- Pindahkan `friendlyErrorMessage` ke `lib/data/network_errors.dart` agar bisa dipakai ulang halaman paged dan non-paged.
+- Tambah halaman detail post dengan GoRouter (`/post/:id`) yang menampilkan `title` dan `body` lengkap; data diambil via `postDetailProvider` (`FutureProvider.family`) → `PostRepository.fetchPost(id)`.
+- Routing di `main.dart`: `/` daftar posts, `/paged` pagination, `/post/:id` detail, `/comments` AI challenge.
+- `go_router` dipin ke `^17.5.0` karena `18.0.1` menarik `material_ui`/`cupertino_ui` yang memakai `@awaitNotRequired` dan tidak kompatibel dengan Flutter 3.44.4.
+
+Hasil halaman detail post:
+<img src="screenshots/post_detail.png" width="350">
+
+
+# Checklist Verifikasi Mandiri
+- [x] UI tidak memanggil Dio langsung; semua akses data lewat repository + provider.
+- [x] Empat state tampil benar: loading, error (+ retry), empty, success.
+- [x] Pagination: data bertambah saat scroll, tidak ada request ganda, ada indikator akhir data.
+- [x] `flutter analyze` tanpa issue dan semua test lulus (9 test).
+- [x] Hasil AI diverifikasi dan didokumentasikan.
 
 
 # Refleksi
