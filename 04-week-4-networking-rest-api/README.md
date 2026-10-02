@@ -149,11 +149,17 @@ Kode AI Challenge ditempatkan pada project `week4_api`:
 
 ## Screenshot AI Challenge
 
+Kode model Comment
+<img src="screenshots/comment.png" width="350">
+
 Kode repository Comment
 <img src="screenshots/comment_repository.png" width="350">
 
 Kode provider Comment + pesan error
 <img src="screenshots/comment_providers.png" width="350">
+
+Unit test
+<img src="screenshots/comment_test.png" width="350">
 
 Hasil di aplikasi (loading, success, error)
 <img src="screenshots/loading.png" width="350">
