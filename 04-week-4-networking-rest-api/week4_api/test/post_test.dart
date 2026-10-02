@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:week4_api/data/models/post.dart';
+import 'package:week4_api/data/network_errors.dart';
 import 'package:week4_api/data/providers.dart';
 import 'package:week4_api/data/repositories/post_repository.dart';
 

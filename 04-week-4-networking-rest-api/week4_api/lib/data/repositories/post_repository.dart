@@ -19,4 +19,10 @@ class PostRepository {
     final data = response.data ?? [];
     return data.whereType<Map<String, dynamic>>().map(Post.fromJson).toList();
   }
+
+  // Detail post untuk route /post/:id.
+  Future<Post> fetchPost(int id) async {
+    final response = await _dio.get<Map<String, dynamic>>('/posts/$id');
+    return Post.fromJson(response.data ?? const {});
+  }
 }
