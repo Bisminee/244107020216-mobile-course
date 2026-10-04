@@ -40,3 +40,6 @@ Aturan arsitektur yang sama seperti Minggu 4 tetap berlaku, hanya sumber datanya
 - **UI tidak boleh memanggil SQLite/SharedPreferences secara langsung**. UI hanya membaca provider.
 - **Repository lokal** adalah satu-satunya pintu ke database dan preferensi. Ia mengubah exception platform menjadi kegagalan bermakna bagi UI.
 - **Provider Riverpod** mengekspos AsyncValue (loading/error/data) dan fungsi invalidate untuk refresh.
+
+
+# Praktikum 1: SharedPreferences
