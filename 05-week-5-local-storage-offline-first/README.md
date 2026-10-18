@@ -159,10 +159,3 @@ Kode repository dan provider
 
 Kode sync (cache-first + dirty flag)
 <img src="screenshots/kode_sync.png" width="350">
-
-Kode unit test
-<img src="screenshots/kode_note_test.png" width="350">
-
-Bukti `flutter analyze` dan `flutter test`
-<img src="screenshots/analyze_test.png" width="350">
-
