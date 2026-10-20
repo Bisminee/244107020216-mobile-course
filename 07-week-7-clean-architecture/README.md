@@ -145,10 +145,11 @@ Refactor project Minggu 5 menjadi **Clean Architecture feature-first** pada fold
 |`lib/pages/cached_posts_page.dart`|presentation|Jadi fitur `announcements` (bukan utilitas)|`features/announcements/`|
 
 ## Tiga Pelanggaran Klasik (Praktikum 2)
-Pencarian di project **sebelum** refactor:
-- Widget yang menyentuh jaringan/database langsung → ditemukan.
-- Logika bisnis di dalam `build()` → ditemukan (formatting tanggal, `jsonDecode`).
-- Instansiasi manual (DI bocor) → ditemukan (`Dio(BaseOptions(...))` di layer presentation, `Repository()` di provider).
+Pencarian dijalankan **sungguhan** di project Minggu 5 dan 6. Path `lib/providers` disesuaikan ke `lib/data/providers.dart` karena itu lokasi aslinya di project Minggu 5. Output lengkap ada di `docs/grep-verifikasi.md`.
+
+- Before `week5_offline_notes`: pencarian (1) jaringan/db di pages+widgets → NOL HASIL; (2) logika bisnis di build() → NOL HASIL; (3) DI bocor → **4 TEMUAN** (`providers.dart:9`, `providers.dart:38`, `note_repository.dart:10`, `auth_repository.dart:11`).
+- Before `campus_notify`: (1) dan (2) NOL HASIL; (3) → **1 TEMUAN** (`auth_provider.dart:10`).
+- Temuan nyata di luar grep: `Note` punya `toMap`/`fromMap` (entity tercampur mapping), `NoteRepository`/`AuthRepository` mencampur kontrak + implementasi, dan kegagalan masih `throw Exception` mentah tanpa tipe `Failure`.
 
 ## Hasil Verifikasi Tiga Grep (setelah refactor)
 **1. Presentation steril dari data mentah** → **NOL HASIL ✅**
