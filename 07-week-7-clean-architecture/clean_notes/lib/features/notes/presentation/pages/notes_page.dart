@@ -37,6 +37,11 @@ class _NotesPageState extends ConsumerState<NotesPage> {
         title: const Text('Catatan (Clean Architecture)'),
         actions: [
           IconButton(
+            icon: const Icon(Icons.auto_awesome),
+            tooltip: 'Asisten AI',
+            onPressed: () => context.push(AppRoutes.assistant),
+          ),
+          IconButton(
             icon: const Icon(Icons.cloud_upload),
             tooltip: 'Sinkronkan',
             onPressed: () async {
