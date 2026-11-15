@@ -163,7 +163,7 @@ Unit test
 
 Hasil di aplikasi (loading, success, error)
 <img src="screenshots/loading.png" width="350">
-<img src="screenshots/sukes.png" width="350">
+<img src="screenshots/sukses.png" width="350">
 <img src="screenshots/eror.png" width="350">
 <img src="screenshots/comment_success.png" width="350">
 <img src="screenshots/comment_error.png" width="350">

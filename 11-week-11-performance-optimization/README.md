@@ -87,11 +87,14 @@ dengan select(query.isEmpty)      : 4 perubahan query -> 1 notifikasi
 - [Dart Language Tour](https://dart.dev/guides/language/language-tour)
 
 # Screenshot
+Bukti optimasi (output test asli): `select` mengurangi notifikasi + semua test hijau
+<img src="screenshots/performance-evidence.png" width="350">
+
 Baseline Flame Chart (`before-profile.png`) — perlu diambil dari DevTools di perangkat
 <img src="screenshots/before-profile.png" width="350">
 
 Flame Chart setelah optimasi (`after-profile.png`) — perlu diambil dari DevTools di perangkat
 <img src="screenshots/after-profile.png" width="350">
 
-> Profiling tidak bisa dihasilkan otomatis tanpa perangkat/emulator. Langkah pengambilan
-> screenshot ada di `docs/performance-report.md`.
+> Profiling Flame Chart tidak bisa dihasilkan otomatis tanpa perangkat/emulator. Langkah
+> pengambilan screenshot ada di `docs/performance-report.md`.
