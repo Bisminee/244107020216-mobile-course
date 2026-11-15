@@ -8,6 +8,7 @@ import '../../domain/repositories/note_repository.dart';
 import '../../domain/usecases/add_note.dart';
 import '../../domain/usecases/delete_note.dart';
 import '../../domain/usecases/get_notes.dart';
+import '../../domain/usecases/search_notes.dart';
 import '../../domain/usecases/sync_notes.dart';
 
 // ===== Data layer: satu-satunya tempat instantiate implementasi =====
@@ -31,6 +32,8 @@ final deleteNoteProvider = Provider<DeleteNote>((ref) {
 final syncNotesProvider = Provider<SyncNotes>((ref) {
   return SyncNotes(ref.watch(noteRepositoryProvider));
 });
+
+final searchNotesProvider = Provider<SearchNotes>((ref) => const SearchNotes());
 
 // ===== Presentation layer: state untuk UI =====
 
@@ -86,6 +89,30 @@ final notesProvider = AsyncNotifierProvider<NotesNotifier, List<Note>>(
   NotesNotifier.new,
   retry: (retryCount, error) => null,
 );
+
+/// Query pencarian (state UI).
+final searchQueryProvider =
+    NotifierProvider<SearchQueryNotifier, String>(SearchQueryNotifier.new);
+
+class SearchQueryNotifier extends Notifier<String> {
+  @override
+  String build() => '';
+
+  void setQuery(String value) => state = value;
+
+  void clear() => state = '';
+}
+
+/// Daftar catatan yang sudah difilter. Diturunkan dari notesProvider,
+/// sehingga tidak ada query database ulang saat pengguna mengetik.
+final filteredNotesProvider = Provider<AsyncValue<List<Note>>>((ref) {
+  final notesAsync = ref.watch(notesProvider);
+  final query = ref.watch(searchQueryProvider);
+  final search = ref.watch(searchNotesProvider);
+  return notesAsync.whenData(
+    (notes) => search(notes: notes, query: query),
+  );
+});
 
 /// Jumlah catatan yang belum tersinkron (badge antrean).
 final dirtyCountProvider = FutureProvider<int>((ref) async {

@@ -214,4 +214,46 @@ void main() {
       'after_settings.png',
     );
   }, skip: !_generate);
+
+  testWidgets('after - search hasil', (tester) async {
+    final container = ProviderContainer(
+      overrides: [
+        noteRepositoryProvider
+            .overrideWithValue(_FakeNoteRepository(items: _notes)),
+      ],
+    );
+    addTearDown(container.dispose);
+
+    await tester.binding.setSurfaceSize(const Size(390, 844));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    await tester.pumpWidget(_app(container, const NotesPage()));
+    await tester.pumpAndSettle();
+    await tester.enterText(find.byType(TextField), 'belanja');
+    await tester.pumpAndSettle();
+    await expectLater(
+      find.byType(MaterialApp),
+      matchesGoldenFile('../../screenshots/after_search.png'),
+    );
+  }, skip: !_generate);
+
+  testWidgets('after - search empty state', (tester) async {
+    final container = ProviderContainer(
+      overrides: [
+        noteRepositoryProvider
+            .overrideWithValue(_FakeNoteRepository(items: _notes)),
+      ],
+    );
+    addTearDown(container.dispose);
+
+    await tester.binding.setSurfaceSize(const Size(390, 844));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    await tester.pumpWidget(_app(container, const NotesPage()));
+    await tester.pumpAndSettle();
+    await tester.enterText(find.byType(TextField), 'zzz-tak-ada');
+    await tester.pumpAndSettle();
+    await expectLater(
+      find.byType(MaterialApp),
+      matchesGoldenFile('../../screenshots/after_search_empty.png'),
+    );
+  }, skip: !_generate);
 }
