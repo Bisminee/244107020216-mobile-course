@@ -18,7 +18,8 @@ class PreferencesRepositoryImpl implements PreferencesRepository {
   }
 
   @override
-  Future<({AppPreferences preferences, Failure? failure})> readPreferences() async {
+  Future<({AppPreferences preferences, Failure? failure})>
+  readPreferences() async {
     try {
       final prefs = await _prefs();
       return (

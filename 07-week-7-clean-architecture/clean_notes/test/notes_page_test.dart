@@ -24,8 +24,7 @@ class _FakeNoteRepository implements NoteRepository {
   Future<({Note? note, Failure? failure})> addNote({
     required String title,
     String body = '',
-  }) async =>
-      (note: null, failure: null);
+  }) async => (note: null, failure: null);
 
   @override
   Future<({bool deleted, Failure? failure})> deleteNote(int id) async =>
@@ -89,5 +88,19 @@ void main() {
       find.text('Tidak ada catatan yang cocok dengan "zzz-tak-ada".'),
       findsOneWidget,
     );
+  });
+
+  testWidgets('tombol clear mengembalikan daftar lengkap', (tester) async {
+    await _pump(tester);
+
+    await tester.enterText(find.byType(TextField), 'belanja');
+    await tester.pumpAndSettle();
+    expect(find.text('Tugas kampus'), findsNothing);
+
+    await tester.tap(find.byTooltip('Hapus pencarian'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Belanja mingguan'), findsOneWidget);
+    expect(find.text('Tugas kampus'), findsOneWidget);
   });
 }

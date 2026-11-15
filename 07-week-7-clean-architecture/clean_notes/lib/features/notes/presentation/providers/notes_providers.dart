@@ -56,8 +56,9 @@ class NotesNotifier extends AsyncNotifier<List<Note>> {
   }
 
   Future<void> add({required String title, String body = ''}) async {
-    final result =
-        await ref.read(addNoteProvider).call(title: title, body: body);
+    final result = await ref
+        .read(addNoteProvider)
+        .call(title: title, body: body);
     if (result.failure != null) {
       state = AsyncError(FailureException(result.failure!), StackTrace.current);
       return;
@@ -91,8 +92,9 @@ final notesProvider = AsyncNotifierProvider<NotesNotifier, List<Note>>(
 );
 
 /// Query pencarian (state UI).
-final searchQueryProvider =
-    NotifierProvider<SearchQueryNotifier, String>(SearchQueryNotifier.new);
+final searchQueryProvider = NotifierProvider<SearchQueryNotifier, String>(
+  SearchQueryNotifier.new,
+);
 
 class SearchQueryNotifier extends Notifier<String> {
   @override
@@ -109,9 +111,7 @@ final filteredNotesProvider = Provider<AsyncValue<List<Note>>>((ref) {
   final notesAsync = ref.watch(notesProvider);
   final query = ref.watch(searchQueryProvider);
   final search = ref.watch(searchNotesProvider);
-  return notesAsync.whenData(
-    (notes) => search(notes: notes, query: query),
-  );
+  return notesAsync.whenData((notes) => search(notes: notes, query: query));
 });
 
 /// Jumlah catatan yang belum tersinkron (badge antrean).

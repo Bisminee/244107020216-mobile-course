@@ -21,16 +21,8 @@ class AnnouncementModel extends Announcement {
     );
   }
 
-  Map<String, dynamic> toJson() => {
-        'id': id,
-        'title': title,
-        'body': body,
-      };
+  Map<String, dynamic> toJson() => {'id': id, 'title': title, 'body': body};
 
-  Announcement toEntity() => Announcement(
-        id: id,
-        title: title,
-        body: body,
-        cachedAt: cachedAt,
-      );
+  Announcement toEntity() =>
+      Announcement(id: id, title: title, body: body, cachedAt: cachedAt);
 }

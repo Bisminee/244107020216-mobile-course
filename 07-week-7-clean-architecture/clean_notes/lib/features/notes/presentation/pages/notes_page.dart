@@ -44,9 +44,11 @@ class _NotesPageState extends ConsumerState<NotesPage> {
               if (!context.mounted) return;
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text(synced == 0
-                      ? 'Tidak ada catatan yang perlu disinkronkan.'
-                      : '$synced catatan tersinkron.'),
+                  content: Text(
+                    synced == 0
+                        ? 'Tidak ada catatan yang perlu disinkronkan.'
+                        : '$synced catatan tersinkron.',
+                  ),
                 ),
               );
             },
@@ -92,8 +94,7 @@ class _NotesPageState extends ConsumerState<NotesPage> {
           ),
           Expanded(
             child: notesAsync.when(
-              loading: () =>
-                  const Center(child: CircularProgressIndicator()),
+              loading: () => const Center(child: CircularProgressIndicator()),
               error: (error, _) => ErrorView(
                 message: '$error',
                 onRetry: () => ref.invalidate(notesProvider),
@@ -150,17 +151,20 @@ class _NotesPageState extends ConsumerState<NotesPage> {
           ),
           FilledButton(
             onPressed: () {
-              ref.read(notesProvider.notifier).add(
-                    title: titleController.text,
-                    body: bodyController.text,
-                  );
+              ref
+                  .read(notesProvider.notifier)
+                  .add(title: titleController.text, body: bodyController.text);
               Navigator.pop(context);
             },
             child: const Text('Simpan'),
           ),
         ],
       ),
-    );
+    ).whenComplete(() {
+      // Perbaikan review: controller tidak boleh bocor setelah dialog ditutup.
+      titleController.dispose();
+      bodyController.dispose();
+    });
   }
 }
 
@@ -183,7 +187,9 @@ class _DirtyBanner extends StatelessWidget {
           color: pending ? Colors.orange : Colors.green,
         ),
         title: Text(
-          pending ? '$count catatan belum tersinkron' : 'Semua catatan tersinkron',
+          pending
+              ? '$count catatan belum tersinkron'
+              : 'Semua catatan tersinkron',
         ),
       ),
     );

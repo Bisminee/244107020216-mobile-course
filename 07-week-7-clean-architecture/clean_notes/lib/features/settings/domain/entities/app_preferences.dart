@@ -1,9 +1,6 @@
 // Entity preferensi aplikasi (murni, tanpa Flutter).
 class AppPreferences {
-  const AppPreferences({
-    this.darkMode = false,
-    this.lastOpenedAt,
-  });
+  const AppPreferences({this.darkMode = false, this.lastOpenedAt});
 
   final bool darkMode;
   final DateTime? lastOpenedAt;

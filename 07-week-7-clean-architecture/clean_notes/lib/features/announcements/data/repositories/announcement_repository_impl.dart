@@ -26,7 +26,7 @@ class AnnouncementRepositoryImpl implements AnnouncementRepository {
 
   @override
   Future<({List<Announcement> announcements, Failure? failure})>
-      fetchAnnouncements() async {
+  fetchAnnouncements() async {
     try {
       final cached = await _readCache();
       if (!forceOffline) {
@@ -46,8 +46,9 @@ class AnnouncementRepositoryImpl implements AnnouncementRepository {
   Future<({int count, Failure? failure})> countCached() async {
     try {
       final db = await _openDb();
-      final rows = await db
-          .rawQuery('SELECT COUNT(*) AS c FROM cached_announcements');
+      final rows = await db.rawQuery(
+        'SELECT COUNT(*) AS c FROM cached_announcements',
+      );
       return (count: (rows.first['c'] as num?)?.toInt() ?? 0, failure: null);
     } catch (e) {
       return (count: 0, failure: LocalFailure('Gagal menghitung cache: $e'));
@@ -58,7 +59,8 @@ class AnnouncementRepositoryImpl implements AnnouncementRepository {
     final db = await _openDb();
     final rows = await db.query('cached_announcements', orderBy: 'id ASC');
     return rows.map((row) {
-      final cachedAt = DateTime.tryParse(row['cached_at'] as String? ?? '') ??
+      final cachedAt =
+          DateTime.tryParse(row['cached_at'] as String? ?? '') ??
           DateTime.fromMillisecondsSinceEpoch(0);
       final decoded = jsonDecode(row['payload'] as String? ?? '{}');
       return AnnouncementModel.fromJson(
@@ -77,7 +79,10 @@ class AnnouncementRepositoryImpl implements AnnouncementRepository {
       batch.delete('cached_announcements');
       final now = DateTime.now().toIso8601String();
       for (final item in data.take(20)) {
-        final model = AnnouncementModel.fromJson(item, cachedAt: DateTime.now());
+        final model = AnnouncementModel.fromJson(
+          item,
+          cachedAt: DateTime.now(),
+        );
         batch.insert('cached_announcements', {
           'id': model.id,
           'payload': jsonEncode(model.toJson()),

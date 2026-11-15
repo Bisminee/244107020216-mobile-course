@@ -37,8 +37,7 @@ class ForceOfflineNotifier extends Notifier<bool> {
 }
 
 // ===== Presentation layer =====
-final announcementsProvider =
-    FutureProvider<List<Announcement>>((ref) async {
+final announcementsProvider = FutureProvider<List<Announcement>>((ref) async {
   final result = await ref.watch(getAnnouncementsProvider).call();
   if (result.failure != null) {
     throw FailureException(result.failure!);
