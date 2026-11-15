@@ -119,16 +119,21 @@ Detail audit, tabel commit sebelum/sesudah, dan hasil review ada di:
 - [Learn Dart in Y Minutes](https://learnxinyminutes.com/dart/)
 
 # Screenshot
-Halaman PR #2 (percakapan review + status merged)
+
+Screenshot di bawah adalah **output CLI asli** yang dirender menjadi gambar
+(dihasilkan dari perintah `gh` / `flutter`, bukan tangkapan layar browser).
+Tangkapan layar halaman GitHub di browser bisa ditambahkan sendiri jika diperlukan.
+
+Review PR #2 (blocker controller + fix)
 <img src="screenshots/pr-2-review.png" width="350">
 
-Halaman PR #3 (blocker retry + fix)
+Review PR #3 (blocker retry + fix)
 <img src="screenshots/pr-3-review.png" width="350">
 
-Pull Requests merged ke `develop`
+Daftar Pull Request (merged)
 <img src="screenshots/pr-list.png" width="350">
 
-CI workflow hijau
+Langkah CI lokal (identik dengan `.github/workflows/ci.yml`)
 <img src="screenshots/ci-green.png" width="350">
 
 `flutter analyze` + `dart format` + `flutter test`
