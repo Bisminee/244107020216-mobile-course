@@ -221,6 +221,21 @@ Tanggung jawab teknis: prompt, daftar perbaikan manual, dan tabel hasil uji tiga
 > Ditandai **[ADA]** = sudah tersedia (digenerate otomatis lewat widget/golden test).
 > Ditandai **[HP]** = masih perlu kamu ambil di perangkat fisik (butuh Firebase + notifikasi nyata).
 
+## Dijalankan di Chrome (viewport HP 390×844)
+
+Aplikasi Flutter web dijalankan di Chrome dengan viewport **390×844 (DPR 3)**,
+lalu login diotomatiskan dengan Puppeteer. Ini screenshot aplikasi berjalan
+sungguhan (bukan render widget test).
+
+Halaman login (guard route mengarahkan ke `/login`)
+<img src="screenshots/web_login.png" width="350">
+
+Beranda setelah login otomatis
+<img src="screenshots/web_home.png" width="350">
+
+Deep link `/pengumuman/3` setelah kartu pengumuman diklik
+<img src="screenshots/web_announcement.png" width="350">
+
 ## Login & Guard Route
 
 Guard route: belum login diarahkan ke `/login` (halaman masuk + validasi email/sandi) — **[ADA]**
