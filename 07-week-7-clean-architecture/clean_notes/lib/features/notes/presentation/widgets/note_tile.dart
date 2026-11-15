@@ -25,11 +25,7 @@ class NoteTile extends ConsumerWidget {
               message: 'Tersinkron',
               child: Icon(Icons.cloud_done, color: Colors.green),
             ),
-      title: Text(
-        note.title,
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
-      ),
+      title: Text(note.title, maxLines: 1, overflow: TextOverflow.ellipsis),
       subtitle: Text(
         note.body.isEmpty ? '(tanpa isi)' : note.body,
         maxLines: 1,
@@ -51,7 +47,9 @@ class NoteTile extends ConsumerWidget {
           ),
         ],
       ),
-      onTap: note.id == null ? null : () => context.push(AppRoutes.note(note.id!)),
+      onTap: note.id == null
+          ? null
+          : () => context.push(AppRoutes.note(note.id!)),
     );
   }
 }

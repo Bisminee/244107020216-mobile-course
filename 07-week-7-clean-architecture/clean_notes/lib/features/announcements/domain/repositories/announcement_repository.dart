@@ -5,7 +5,7 @@ import '../entities/announcement.dart';
 abstract class AnnouncementRepository {
   /// Cache-first: baca cache lokal dulu, refresh jaringan di background.
   Future<({List<Announcement> announcements, Failure? failure})>
-      fetchAnnouncements();
+  fetchAnnouncements();
 
   Future<({int count, Failure? failure})> countCached();
 }

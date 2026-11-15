@@ -8,20 +8,37 @@ import '../providers/notes_providers.dart';
 import '../widgets/note_tile.dart';
 
 /// Halaman catatan. Tidak ada SQL, tidak ada Dio, tidak ada parsing JSON.
-/// Halaman ini hanya membaca state dari provider.
-class NotesPage extends ConsumerWidget {
+/// Pencarian hanya mengubah state query; filter judul dijalankan use case domain.
+class NotesPage extends ConsumerStatefulWidget {
   const NotesPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final notesAsync = ref.watch(notesProvider);
-    final dirtyAsync = ref.watch(dirtyCountProvider);
-    final dirtyCount = dirtyAsync.value ?? 0;
+  ConsumerState<NotesPage> createState() => _NotesPageState();
+}
+
+class _NotesPageState extends ConsumerState<NotesPage> {
+  final _searchController = TextEditingController();
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final notesAsync = ref.watch(filteredNotesProvider);
+    final query = ref.watch(searchQueryProvider);
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Catatan (Clean Architecture)'),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.auto_awesome),
+            tooltip: 'Asisten AI',
+            onPressed: () => context.push(AppRoutes.assistant),
+          ),
           IconButton(
             icon: const Icon(Icons.cloud_upload),
             tooltip: 'Sinkronkan',
@@ -30,9 +47,11 @@ class NotesPage extends ConsumerWidget {
               if (!context.mounted) return;
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text(synced == 0
-                      ? 'Tidak ada catatan yang perlu disinkronkan.'
-                      : '$synced catatan tersinkron.'),
+                  content: Text(
+                    synced == 0
+                        ? 'Tidak ada catatan yang perlu disinkronkan.'
+                        : '$synced catatan tersinkron.',
+                  ),
                 ),
               );
             },
@@ -51,36 +70,65 @@ class NotesPage extends ConsumerWidget {
       ),
       body: Column(
         children: [
-          _DirtyBanner(count: dirtyCount),
+          const _DirtyBanner(),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(12, 8, 12, 4),
+            child: TextField(
+              controller: _searchController,
+              onChanged: (value) =>
+                  ref.read(searchQueryProvider.notifier).setQuery(value),
+              decoration: InputDecoration(
+                hintText: 'Cari judul catatan...',
+                prefixIcon: const Icon(Icons.search),
+                border: const OutlineInputBorder(),
+                isDense: true,
+                suffixIcon: query.isEmpty
+                    ? null
+                    : IconButton(
+                        icon: const Icon(Icons.clear),
+                        tooltip: 'Hapus pencarian',
+                        onPressed: () {
+                          _searchController.clear();
+                          ref.read(searchQueryProvider.notifier).clear();
+                        },
+                      ),
+              ),
+            ),
+          ),
           Expanded(
             child: notesAsync.when(
-              loading: () =>
-                  const Center(child: CircularProgressIndicator()),
+              loading: () => const Center(child: CircularProgressIndicator()),
               error: (error, _) => ErrorView(
                 message: '$error',
                 onRetry: () => ref.invalidate(notesProvider),
               ),
-              data: (notes) => notes.isEmpty
-                  ? const EmptyView(
-                      message: 'Belum ada catatan. Tambahkan lewat tombol +.',
-                    )
-                  : ListView.builder(
-                      itemCount: notes.length,
-                      itemBuilder: (context, index) =>
-                          NoteTile(note: notes[index]),
-                    ),
+              data: (notes) {
+                if (notes.isEmpty) {
+                  return EmptyView(
+                    message: query.isEmpty
+                        ? 'Belum ada catatan. Tambahkan lewat tombol +.'
+                        : 'Tidak ada catatan yang cocok dengan "$query".',
+                  );
+                }
+                // RepaintBoundary TIDAK dipakai di sini: Scrollable/Viewport
+                // sudah punya repaint boundary sendiri (temuan review).
+                return ListView.builder(
+                  itemCount: notes.length,
+                  itemBuilder: (context, index) => NoteTile(note: notes[index]),
+                );
+              },
             ),
           ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => _showAddDialog(context, ref),
+        onPressed: () => _showAddDialog(context),
         child: const Icon(Icons.add),
       ),
     );
   }
 
-  void _showAddDialog(BuildContext context, WidgetRef ref) {
+  void _showAddDialog(BuildContext context) {
     final titleController = TextEditingController();
     final bodyController = TextEditingController();
     showDialog(
@@ -108,27 +156,31 @@ class NotesPage extends ConsumerWidget {
           ),
           FilledButton(
             onPressed: () {
-              ref.read(notesProvider.notifier).add(
-                    title: titleController.text,
-                    body: bodyController.text,
-                  );
+              ref
+                  .read(notesProvider.notifier)
+                  .add(title: titleController.text, body: bodyController.text);
               Navigator.pop(context);
             },
             child: const Text('Simpan'),
           ),
         ],
       ),
-    );
+    ).whenComplete(() {
+      // Perbaikan review: controller tidak boleh bocor setelah dialog ditutup.
+      titleController.dispose();
+      bodyController.dispose();
+    });
   }
 }
 
-class _DirtyBanner extends StatelessWidget {
-  const _DirtyBanner({required this.count});
-
-  final int count;
+class _DirtyBanner extends ConsumerWidget {
+  const _DirtyBanner();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    // Optimasi: select() membuat banner hanya rebuild saat NILAI count
+    // berubah, bukan setiap kali AsyncValue berganti loading/data.
+    final count = ref.watch(dirtyCountProvider.select((v) => v.value ?? 0));
     final pending = count > 0;
     return Material(
       color: pending
@@ -141,7 +193,9 @@ class _DirtyBanner extends StatelessWidget {
           color: pending ? Colors.orange : Colors.green,
         ),
         title: Text(
-          pending ? '$count catatan belum tersinkron' : 'Semua catatan tersinkron',
+          pending
+              ? '$count catatan belum tersinkron'
+              : 'Semua catatan tersinkron',
         ),
       ),
     );

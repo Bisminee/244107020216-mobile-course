@@ -15,7 +15,9 @@ final toggleDarkModeProvider = Provider<ToggleDarkMode>((ref) {
 });
 
 final preferencesProvider = FutureProvider<AppPreferences>((ref) async {
-  final result = await ref.watch(preferencesRepositoryProvider).readPreferences();
+  final result = await ref
+      .watch(preferencesRepositoryProvider)
+      .readPreferences();
   if (result.failure != null) throw FailureException(result.failure!);
   return result.preferences;
 });
