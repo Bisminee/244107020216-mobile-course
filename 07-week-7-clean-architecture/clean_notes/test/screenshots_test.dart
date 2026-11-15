@@ -5,6 +5,9 @@ import 'package:clean_notes/features/announcements/domain/entities/announcement.
 import 'package:clean_notes/features/announcements/domain/repositories/announcement_repository.dart';
 import 'package:clean_notes/features/announcements/presentation/pages/announcements_page.dart';
 import 'package:clean_notes/features/announcements/presentation/providers/announcements_providers.dart';
+import 'package:clean_notes/features/assistant/domain/repositories/assistant_repository.dart';
+import 'package:clean_notes/features/assistant/presentation/pages/assistant_page.dart';
+import 'package:clean_notes/features/assistant/presentation/providers/assistant_providers.dart';
 import 'package:clean_notes/features/notes/domain/entities/note.dart';
 import 'package:clean_notes/features/notes/domain/repositories/note_repository.dart';
 import 'package:clean_notes/features/notes/presentation/pages/note_detail_page.dart';
@@ -93,6 +96,26 @@ class _FakeAnnouncementRepository implements AnnouncementRepository {
   @override
   Future<({int count, Failure? failure})> countCached() async =>
       (count: 1, failure: null);
+}
+
+class _FakeAssistantRepository implements AssistantRepository {
+  _FakeAssistantRepository({this.answer, this.failure});
+
+  final String? answer;
+  final Failure? failure;
+
+  @override
+  Future<({String? answer, Failure? failure})> ask(String question) async =>
+      (answer: answer, failure: failure);
+
+  @override
+  Future<bool> hasApiKey() async => true;
+
+  @override
+  Future<void> saveApiKey(String key) async {}
+
+  @override
+  Future<void> clearApiKey() async {}
 }
 
 final _notes = [
@@ -260,6 +283,60 @@ void main() {
     await expectLater(
       find.byType(MaterialApp),
       matchesGoldenFile('../../screenshots/after_search_empty.png'),
+    );
+  }, skip: !_generate);
+
+  testWidgets('after - asisten AI', (tester) async {
+    final container = ProviderContainer(
+      overrides: [
+        assistantRepositoryProvider.overrideWithValue(
+          _FakeAssistantRepository(
+            answer:
+                'KRS adalah Kartu Rencana Studi. Ajukan lewat dosen wali '
+                'sebelum batas pengisian.',
+          ),
+        ),
+      ],
+    );
+    addTearDown(container.dispose);
+
+    await tester.binding.setSurfaceSize(const Size(390, 844));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    await tester.pumpWidget(_app(container, const AssistantPage()));
+    await tester.pumpAndSettle();
+    await tester.enterText(find.byType(TextField), 'Apa itu KRS?');
+    await tester.tap(find.byTooltip('Kirim'));
+    await tester.pumpAndSettle();
+    await expectLater(
+      find.byType(MaterialApp),
+      matchesGoldenFile('../../screenshots/after_assistant.png'),
+    );
+  }, skip: !_generate);
+
+  testWidgets('after - asisten AI error', (tester) async {
+    final container = ProviderContainer(
+      overrides: [
+        assistantRepositoryProvider.overrideWithValue(
+          _FakeAssistantRepository(
+            failure: const NetworkFailure(
+              'Kuota AI habis atau terlalu banyak permintaan. Coba lagi nanti.',
+            ),
+          ),
+        ),
+      ],
+    );
+    addTearDown(container.dispose);
+
+    await tester.binding.setSurfaceSize(const Size(390, 844));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    await tester.pumpWidget(_app(container, const AssistantPage()));
+    await tester.pumpAndSettle();
+    await tester.enterText(find.byType(TextField), 'Apa itu KRS?');
+    await tester.tap(find.byTooltip('Kirim'));
+    await tester.pumpAndSettle();
+    await expectLater(
+      find.byType(MaterialApp),
+      matchesGoldenFile('../../screenshots/after_assistant_error.png'),
     );
   }, skip: !_generate);
 }
