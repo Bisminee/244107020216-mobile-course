@@ -29,8 +29,6 @@ class _NotesPageState extends ConsumerState<NotesPage> {
   Widget build(BuildContext context) {
     final notesAsync = ref.watch(filteredNotesProvider);
     final query = ref.watch(searchQueryProvider);
-    final dirtyAsync = ref.watch(dirtyCountProvider);
-    final dirtyCount = dirtyAsync.value ?? 0;
 
     return Scaffold(
       appBar: AppBar(
@@ -72,7 +70,7 @@ class _NotesPageState extends ConsumerState<NotesPage> {
       ),
       body: Column(
         children: [
-          _DirtyBanner(count: dirtyCount),
+          const _DirtyBanner(),
           Padding(
             padding: const EdgeInsets.fromLTRB(12, 8, 12, 4),
             child: TextField(
@@ -112,9 +110,12 @@ class _NotesPageState extends ConsumerState<NotesPage> {
                         : 'Tidak ada catatan yang cocok dengan "$query".',
                   );
                 }
-                return ListView.builder(
-                  itemCount: notes.length,
-                  itemBuilder: (context, index) => NoteTile(note: notes[index]),
+                return RepaintBoundary(
+                  child: ListView.builder(
+                    itemCount: notes.length,
+                    itemBuilder: (context, index) =>
+                        NoteTile(note: notes[index]),
+                  ),
                 );
               },
             ),
@@ -173,13 +174,14 @@ class _NotesPageState extends ConsumerState<NotesPage> {
   }
 }
 
-class _DirtyBanner extends StatelessWidget {
-  const _DirtyBanner({required this.count});
-
-  final int count;
+class _DirtyBanner extends ConsumerWidget {
+  const _DirtyBanner();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    // Optimasi: select() membuat banner hanya rebuild saat NILAI count
+    // berubah, bukan setiap kali AsyncValue berganti loading/data.
+    final count = ref.watch(dirtyCountProvider.select((v) => v.value ?? 0));
     final pending = count > 0;
     return Material(
       color: pending
