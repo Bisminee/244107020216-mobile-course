@@ -70,17 +70,31 @@ class ChatNotifier extends Notifier<ChatState> {
   Future<void> ask(String question) async {
     final q = question.trim();
     if (q.isEmpty || state.isSending) return;
+    await _send(q, appendUser: true);
+  }
 
-    final userMessage = ChatMessage(
-      role: ChatRole.user,
-      text: q,
-      createdAt: DateTime.now(),
-    );
-    state = ChatState(
-      messages: [...state.messages, userMessage],
-      isSending: true,
-      lastQuestion: q,
-    );
+  /// Coba lagi pertanyaan terakhir setelah error TANPA menduplikasi
+  /// pesan user di list (temuan review).
+  Future<void> retry() async {
+    final q = state.lastQuestion;
+    if (q == null || state.isSending) return;
+    state = state.copyWith(clearError: true);
+    await _send(q, appendUser: false);
+  }
+
+  Future<void> _send(String q, {required bool appendUser}) async {
+    final messages = appendUser
+        ? [
+            ...state.messages,
+            ChatMessage(
+              role: ChatRole.user,
+              text: q,
+              createdAt: DateTime.now(),
+            ),
+          ]
+        : state.messages;
+
+    state = ChatState(messages: messages, isSending: true, lastQuestion: q);
 
     final result = await ref.read(askAssistantProvider).call(q);
 
@@ -99,14 +113,6 @@ class ChatNotifier extends Notifier<ChatState> {
       isSending: false,
       lastQuestion: q,
     );
-  }
-
-  /// Coba lagi pertanyaan terakhir setelah error.
-  Future<void> retry() async {
-    final q = state.lastQuestion;
-    if (q == null) return;
-    state = state.copyWith(clearError: true);
-    await ask(q);
   }
 
   void clearError() => state = state.copyWith(clearError: true);

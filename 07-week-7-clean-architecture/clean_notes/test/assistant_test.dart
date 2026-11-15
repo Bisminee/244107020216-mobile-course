@@ -94,5 +94,27 @@ void main() {
       expect(state.lastQuestion, 'Halo');
       expect(state.isSending, isFalse);
     });
+
+    test('retry tidak menduplikasi pesan user (temuan review)', () async {
+      final container = ProviderContainer(
+        overrides: [
+          assistantRepositoryProvider.overrideWithValue(
+            _FakeAssistantRepository(
+              failure: const NetworkFailure('Layanan AI sibuk.'),
+            ),
+          ),
+        ],
+      );
+      addTearDown(container.dispose);
+
+      await container.read(chatProvider.notifier).ask('Halo');
+      expect(container.read(chatProvider).messages.length, 1);
+
+      await container.read(chatProvider.notifier).retry();
+
+      final state = container.read(chatProvider);
+      expect(state.messages.length, 1);
+      expect(state.error, 'Layanan AI sibuk.');
+    });
   });
 }

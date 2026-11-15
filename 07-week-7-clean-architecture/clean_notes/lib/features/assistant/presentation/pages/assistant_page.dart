@@ -137,53 +137,64 @@ class _AssistantPageState extends ConsumerState<AssistantPage> {
 
   Future<void> _showKeyDialog() async {
     final controller = TextEditingController();
+    String? keyError;
     final saved = await showDialog<bool>(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Atur API key AI'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Text(
-              'API key hanya disimpan di secure storage (Keystore/Keychain). '
-              'Jangan gunakan data pribadi di percakapan.',
-            ),
-            const SizedBox(height: 12),
-            TextField(
-              controller: controller,
-              obscureText: true,
-              autocorrect: false,
-              enableSuggestions: false,
-              decoration: const InputDecoration(
-                labelText: 'API key (write-only)',
-                helperText: 'Key lama tidak pernah ditampilkan ulang.',
-                border: OutlineInputBorder(),
+      builder: (dialogContext) => StatefulBuilder(
+        builder: (dialogContext, setDialogState) => AlertDialog(
+          title: const Text('Atur API key AI'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text(
+                'API key hanya disimpan di secure storage (Keystore/Keychain). '
+                'Jangan gunakan data pribadi di percakapan.',
               ),
+              const SizedBox(height: 12),
+              TextField(
+                controller: controller,
+                obscureText: true,
+                autocorrect: false,
+                enableSuggestions: false,
+                decoration: InputDecoration(
+                  labelText: 'API key (write-only)',
+                  helperText: 'Key lama tidak pernah ditampilkan ulang.',
+                  errorText: keyError,
+                  border: const OutlineInputBorder(),
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(dialogContext, false),
+              child: const Text('Batal'),
+            ),
+            TextButton(
+              onPressed: () async {
+                await ref.read(assistantRepositoryProvider).clearApiKey();
+                if (dialogContext.mounted) Navigator.pop(dialogContext, true);
+              },
+              child: const Text('Hapus'),
+            ),
+            FilledButton(
+              onPressed: () async {
+                final value = controller.text.trim();
+                // Temuan review: tolak key yang terlalu pendek (kemungkinan typo).
+                if (value.length < 20) {
+                  setDialogState(
+                    () => keyError =
+                        'API key terlalu pendek (minimal 20 karakter).',
+                  );
+                  return;
+                }
+                await ref.read(assistantRepositoryProvider).saveApiKey(value);
+                if (dialogContext.mounted) Navigator.pop(dialogContext, true);
+              },
+              child: const Text('Simpan'),
             ),
           ],
         ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: const Text('Batal'),
-          ),
-          TextButton(
-            onPressed: () async {
-              await ref.read(assistantRepositoryProvider).clearApiKey();
-              if (context.mounted) Navigator.pop(context, true);
-            },
-            child: const Text('Hapus'),
-          ),
-          FilledButton(
-            onPressed: () async {
-              final value = controller.text.trim();
-              if (value.isEmpty) return;
-              await ref.read(assistantRepositoryProvider).saveApiKey(value);
-              if (context.mounted) Navigator.pop(context, true);
-            },
-            child: const Text('Simpan'),
-          ),
-        ],
       ),
     );
     controller.dispose();
