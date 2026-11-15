@@ -29,20 +29,23 @@ class AnnouncementsPage extends ConsumerWidget {
           SwitchListTile(
             title: const Text('Force offline'),
             subtitle: const Text(
-                'Aktif: hanya cache lokal yang dibaca, tanpa request jaringan'),
+              'Aktif: hanya cache lokal yang dibaca, tanpa request jaringan',
+            ),
             value: forceOffline,
             onChanged: (_) => ref.read(forceOfflineProvider.notifier).toggle(),
           ),
           const Divider(height: 1),
           Expanded(
             child: announcementsAsync.when(
-              loading: () =>
-                  const Center(child: CircularProgressIndicator()),
-              error: (error, _) =>
-                  ErrorView(message: '$error', onRetry: () => ref.invalidate(announcementsProvider)),
+              loading: () => const Center(child: CircularProgressIndicator()),
+              error: (error, _) => ErrorView(
+                message: '$error',
+                onRetry: () => ref.invalidate(announcementsProvider),
+              ),
               data: (announcements) => announcements.isEmpty
                   ? const EmptyView(
-                      message: 'Cache kosong. Matikan force offline lalu muat ulang.',
+                      message:
+                          'Cache kosong. Matikan force offline lalu muat ulang.',
                     )
                   : ListView.builder(
                       itemCount: announcements.length,
@@ -50,8 +53,11 @@ class AnnouncementsPage extends ConsumerWidget {
                         final item = announcements[index];
                         return ListTile(
                           leading: CircleAvatar(child: Text('${item.id}')),
-                          title: Text(item.title,
-                              maxLines: 1, overflow: TextOverflow.ellipsis),
+                          title: Text(
+                            item.title,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
                           subtitle: Text(
                             'Dicache: ${formatDateTime(item.cachedAt)}',
                             style: Theme.of(context).textTheme.bodySmall,

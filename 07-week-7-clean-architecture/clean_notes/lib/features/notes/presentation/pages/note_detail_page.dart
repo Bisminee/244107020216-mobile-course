@@ -19,8 +19,10 @@ class NoteDetailPage extends ConsumerWidget {
       appBar: AppBar(title: const Text('Detail Catatan')),
       body: noteAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (error, _) =>
-            ErrorView(message: '$error', onRetry: () => ref.invalidate(noteDetailProvider(id))),
+        error: (error, _) => ErrorView(
+          message: '$error',
+          onRetry: () => ref.invalidate(noteDetailProvider(id)),
+        ),
         data: (note) {
           if (note == null) {
             return const EmptyView(message: 'Catatan tidak ditemukan.');
@@ -30,8 +32,7 @@ class NoteDetailPage extends ConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(note.title,
-                    style: Theme.of(context).textTheme.titleLarge),
+                Text(note.title, style: Theme.of(context).textTheme.titleLarge),
                 const SizedBox(height: 8),
                 Row(
                   children: [

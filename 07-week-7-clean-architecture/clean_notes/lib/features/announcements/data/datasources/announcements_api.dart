@@ -3,15 +3,16 @@ import 'package:dio/dio.dart';
 /// Data source HTTP fitur pengumuman. Tepatnya kelas ini yang tahu soal Dio.
 class AnnouncementApi {
   AnnouncementApi({Dio? dio})
-      : _dio = dio ??
-            Dio(
-              BaseOptions(
-                baseUrl: 'https://jsonplaceholder.typicode.com',
-                connectTimeout: const Duration(seconds: 10),
-                receiveTimeout: const Duration(seconds: 10),
-                headers: {'Accept': 'application/json'},
-              ),
-            );
+    : _dio =
+          dio ??
+          Dio(
+            BaseOptions(
+              baseUrl: 'https://jsonplaceholder.typicode.com',
+              connectTimeout: const Duration(seconds: 10),
+              receiveTimeout: const Duration(seconds: 10),
+              headers: {'Accept': 'application/json'},
+            ),
+          );
 
   final Dio _dio;
 

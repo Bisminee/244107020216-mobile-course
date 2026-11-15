@@ -43,8 +43,7 @@ class _FakeNoteRepository implements NoteRepository {
   Future<({Note? note, Failure? failure})> addNote({
     required String title,
     String body = '',
-  }) async =>
-      (note: null, failure: null);
+  }) async => (note: null, failure: null);
 
   @override
   Future<({bool deleted, Failure? failure})> deleteNote(int id) async =>
@@ -61,14 +60,11 @@ class _FakeNoteRepository implements NoteRepository {
 
 class _FakePreferencesRepository implements PreferencesRepository {
   @override
-  Future<({AppPreferences preferences, Failure? failure})> readPreferences() async =>
-      (
-        preferences: const AppPreferences(
-          darkMode: true,
-          lastOpenedAt: null,
-        ),
-        failure: null,
-      );
+  Future<({AppPreferences preferences, Failure? failure})>
+  readPreferences() async => (
+    preferences: const AppPreferences(darkMode: true, lastOpenedAt: null),
+    failure: null,
+  );
 
   @override
   Future<({bool saved, Failure? failure})> saveDarkMode(bool value) async =>
@@ -82,17 +78,17 @@ class _FakePreferencesRepository implements PreferencesRepository {
 class _FakeAnnouncementRepository implements AnnouncementRepository {
   @override
   Future<({List<Announcement> announcements, Failure? failure})>
-      fetchAnnouncements() async => (
-            announcements: [
-              Announcement(
-                id: 1,
-                title: 'Jadwal kuliah berubah',
-                body: 'Kelas Mobile pindah ke Ruang A2 jam 13.00',
-                cachedAt: DateTime(2026, 9, 27, 8, 30),
-              ),
-            ],
-            failure: null,
-          );
+  fetchAnnouncements() async => (
+    announcements: [
+      Announcement(
+        id: 1,
+        title: 'Jadwal kuliah berubah',
+        body: 'Kelas Mobile pindah ke Ruang A2 jam 13.00',
+        cachedAt: DateTime(2026, 9, 27, 8, 30),
+      ),
+    ],
+    failure: null,
+  );
 
   @override
   Future<({int count, Failure? failure})> countCached() async =>
@@ -148,12 +144,17 @@ void main() {
   testWidgets('after - daftar catatan', (tester) async {
     final container = ProviderContainer(
       overrides: [
-        noteRepositoryProvider
-            .overrideWithValue(_FakeNoteRepository(items: _notes)),
+        noteRepositoryProvider.overrideWithValue(
+          _FakeNoteRepository(items: _notes),
+        ),
       ],
     );
     addTearDown(container.dispose);
-    await _capture(tester, _app(container, const NotesPage()), 'after_notes.png');
+    await _capture(
+      tester,
+      _app(container, const NotesPage()),
+      'after_notes.png',
+    );
   }, skip: !_generate);
 
   testWidgets('after - daftar kosong', (tester) async {
@@ -173,8 +174,9 @@ void main() {
   testWidgets('after - detail catatan', (tester) async {
     final container = ProviderContainer(
       overrides: [
-        noteRepositoryProvider
-            .overrideWithValue(_FakeNoteRepository(items: _notes)),
+        noteRepositoryProvider.overrideWithValue(
+          _FakeNoteRepository(items: _notes),
+        ),
       ],
     );
     addTearDown(container.dispose);
@@ -188,8 +190,9 @@ void main() {
   testWidgets('after - pengumuman (cache-first)', (tester) async {
     final container = ProviderContainer(
       overrides: [
-        announcementRepositoryProvider
-            .overrideWithValue(_FakeAnnouncementRepository()),
+        announcementRepositoryProvider.overrideWithValue(
+          _FakeAnnouncementRepository(),
+        ),
       ],
     );
     addTearDown(container.dispose);
@@ -203,8 +206,9 @@ void main() {
   testWidgets('after - pengaturan (mode gelap)', (tester) async {
     final container = ProviderContainer(
       overrides: [
-        preferencesRepositoryProvider
-            .overrideWithValue(_FakePreferencesRepository()),
+        preferencesRepositoryProvider.overrideWithValue(
+          _FakePreferencesRepository(),
+        ),
       ],
     );
     addTearDown(container.dispose);
@@ -212,6 +216,50 @@ void main() {
       tester,
       _app(container, const SettingsPage()),
       'after_settings.png',
+    );
+  }, skip: !_generate);
+
+  testWidgets('after - search hasil', (tester) async {
+    final container = ProviderContainer(
+      overrides: [
+        noteRepositoryProvider.overrideWithValue(
+          _FakeNoteRepository(items: _notes),
+        ),
+      ],
+    );
+    addTearDown(container.dispose);
+
+    await tester.binding.setSurfaceSize(const Size(390, 844));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    await tester.pumpWidget(_app(container, const NotesPage()));
+    await tester.pumpAndSettle();
+    await tester.enterText(find.byType(TextField), 'belanja');
+    await tester.pumpAndSettle();
+    await expectLater(
+      find.byType(MaterialApp),
+      matchesGoldenFile('../../screenshots/after_search.png'),
+    );
+  }, skip: !_generate);
+
+  testWidgets('after - search empty state', (tester) async {
+    final container = ProviderContainer(
+      overrides: [
+        noteRepositoryProvider.overrideWithValue(
+          _FakeNoteRepository(items: _notes),
+        ),
+      ],
+    );
+    addTearDown(container.dispose);
+
+    await tester.binding.setSurfaceSize(const Size(390, 844));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    await tester.pumpWidget(_app(container, const NotesPage()));
+    await tester.pumpAndSettle();
+    await tester.enterText(find.byType(TextField), 'zzz-tak-ada');
+    await tester.pumpAndSettle();
+    await expectLater(
+      find.byType(MaterialApp),
+      matchesGoldenFile('../../screenshots/after_search_empty.png'),
     );
   }, skip: !_generate);
 }

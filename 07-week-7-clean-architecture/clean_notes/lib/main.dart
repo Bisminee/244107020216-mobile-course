@@ -44,8 +44,9 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(path: AppRoutes.home, builder: (_, _) => const NotesPage()),
       GoRoute(
         path: AppRoutes.notePattern,
-        builder: (_, state) =>
-            NoteDetailPage(id: int.tryParse(state.pathParameters['id'] ?? '') ?? 0),
+        builder: (_, state) => NoteDetailPage(
+          id: int.tryParse(state.pathParameters['id'] ?? '') ?? 0,
+        ),
       ),
       GoRoute(
         path: AppRoutes.announcements,

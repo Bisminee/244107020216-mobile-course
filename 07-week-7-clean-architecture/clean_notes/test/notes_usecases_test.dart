@@ -24,7 +24,9 @@ void main() {
     test('memotong spasi lalu meneruskan ke repository', () async {
       final repo = FakeNoteRepository();
 
-      final result = await AddNote(repo).call(title: '  Catatan  ', body: ' isi ');
+      final result = await AddNote(
+        repo,
+      ).call(title: '  Catatan  ', body: ' isi ');
 
       expect(result.failure, isNull);
       expect(result.note!.title, 'Catatan');
@@ -42,9 +44,9 @@ void main() {
 
   group('SyncNotes', () {
     test('tidak melakukan apa-apa bila tidak ada catatan dirty', () async {
-      final repo = FakeNoteRepository(items: [
-        Note(title: 'A', updatedAt: DateTime(2026, 9, 27)),
-      ]);
+      final repo = FakeNoteRepository(
+        items: [Note(title: 'A', updatedAt: DateTime(2026, 9, 27))],
+      );
 
       final result = await SyncNotes(repo).call();
 
@@ -53,11 +55,13 @@ void main() {
     });
 
     test('melaporkan jumlah catatan yang tersinkron', () async {
-      final repo = FakeNoteRepository(items: [
-        Note(title: 'A', updatedAt: DateTime(2026, 9, 27), dirty: true),
-        Note(title: 'B', updatedAt: DateTime(2026, 9, 27), dirty: true),
-        Note(title: 'C', updatedAt: DateTime(2026, 9, 27)),
-      ]);
+      final repo = FakeNoteRepository(
+        items: [
+          Note(title: 'A', updatedAt: DateTime(2026, 9, 27), dirty: true),
+          Note(title: 'B', updatedAt: DateTime(2026, 9, 27), dirty: true),
+          Note(title: 'C', updatedAt: DateTime(2026, 9, 27)),
+        ],
+      );
 
       final result = await SyncNotes(repo).call();
 
