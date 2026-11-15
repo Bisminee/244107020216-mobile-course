@@ -57,14 +57,12 @@ class _AssistantPageState extends ConsumerState<AssistantPage> {
           Expanded(
             child: chat.messages.isEmpty
                 ? const _EmptyChat()
-                : RepaintBoundary(
-                    child: ListView.builder(
-                      controller: _scroll,
-                      padding: const EdgeInsets.all(12),
-                      itemCount: chat.messages.length,
-                      itemBuilder: (context, index) =>
-                          _Bubble(message: chat.messages[index]),
-                    ),
+                : ListView.builder(
+                    controller: _scroll,
+                    padding: const EdgeInsets.all(12),
+                    itemCount: chat.messages.length,
+                    itemBuilder: (context, index) =>
+                        _Bubble(message: chat.messages[index]),
                   ),
           ),
           if (chat.isSending)

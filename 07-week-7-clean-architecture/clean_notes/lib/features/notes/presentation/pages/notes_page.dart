@@ -110,12 +110,11 @@ class _NotesPageState extends ConsumerState<NotesPage> {
                         : 'Tidak ada catatan yang cocok dengan "$query".',
                   );
                 }
-                return RepaintBoundary(
-                  child: ListView.builder(
-                    itemCount: notes.length,
-                    itemBuilder: (context, index) =>
-                        NoteTile(note: notes[index]),
-                  ),
+                // RepaintBoundary TIDAK dipakai di sini: Scrollable/Viewport
+                // sudah punya repaint boundary sendiri (temuan review).
+                return ListView.builder(
+                  itemCount: notes.length,
+                  itemBuilder: (context, index) => NoteTile(note: notes[index]),
                 );
               },
             ),
